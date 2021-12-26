@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "net6-markdown-web-engine", "net6-markdown-web-engine\net6-markdown-web-engine.esproj", "{BAB8CFE4-58B1-4E20-ACEE-2A2596812EB4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "net6-markdown-web-engine.backend", "net6-markdown-web-engine.backend\net6-markdown-web-engine.backend.csproj", "{A541E7B8-08B3-413A-94FB-72A7F11CAC9A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "net6-markdown-web-engine.backend", "net6-markdown-web-engine.backend\net6-markdown-web-engine.backend.csproj", "{A541E7B8-08B3-413A-94FB-72A7F11CAC9A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
