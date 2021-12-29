@@ -22,6 +22,17 @@ public class DocumentsWatchService : BackgroundService
     {
         var now = DateTime.Now;
 
+        var getFileProviderTaskCompletionSource = () =>
+        {
+            var fileProvider = new PhysicalFileProvider(_options.Value.InputDirectry);
+            var changeToken = fileProvider.Watch("**");
+            var tcs = new TaskCompletionSource();
+
+            changeToken.RegisterChangeCallback(state => ((TaskCompletionSource)state).TrySetResult(), tcs);
+
+            return tcs;
+        };
+
         while (!token.IsCancellationRequested)
         {
             _logger.LogInformation($"Start md2json conversion for updated file.");
@@ -35,7 +46,7 @@ public class DocumentsWatchService : BackgroundService
             }
 
             _logger.LogInformation("Watch documents updated after {now}", DateTime.Now);
-            var tcs = GetFileProviderTask();
+            var tcs = getFileProviderTaskCompletionSource();
             using (token.Register(() =>
             {
                 // this callback will be executed when token is cancelled
@@ -48,17 +59,5 @@ public class DocumentsWatchService : BackgroundService
             }
         }
 
-    }
-
-    private TaskCompletionSource GetFileProviderTask()
-    {
-        var fileProvider = new PhysicalFileProvider(_options.Value.InputDirectry);
-        var tcs = new TaskCompletionSource();
-        var token = fileProvider.Watch("**");
-
-        token.RegisterChangeCallback(state =>
-            ((TaskCompletionSource)state).TrySetResult(), tcs);
-
-        return tcs;
     }
 }
