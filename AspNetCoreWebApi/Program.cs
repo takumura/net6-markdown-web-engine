@@ -1,4 +1,5 @@
 using Net6MarkdownWebEngine.Backend.Services;
+using Net6MarkdownWebEngine.Converter;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,12 +11,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // // Add md2json converter service
-//builder.Services.AddSingleton<IService, MarkdownConverterService>();
+builder.Services.AddSingleton<IMarkdownConverterService, MarkdownConverterService>();
 
 // Add Documents Watch Service
 var contetRootPath = builder.Environment.ContentRootPath;
 var isDevelopment = builder.Environment.IsDevelopment();
-builder.Services.Configure<DocumentsWatchServiceOptions> (options =>
+builder.Services.Configure<DocumentsWatchServiceOptions>(options =>
 {
     options.InputDirectry = Path.Combine(contetRootPath, "../AngularStandalone/src/assets/docs");
     if (isDevelopment)

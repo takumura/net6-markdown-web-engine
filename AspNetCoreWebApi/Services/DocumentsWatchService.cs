@@ -1,21 +1,23 @@
 ﻿using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
+using Net6MarkdownWebEngine.Converter;
 
 namespace Net6MarkdownWebEngine.Backend.Services;
 
 public class DocumentsWatchService : BackgroundService
 {
-    private readonly ILogger<DocumentsWatchService> _logger;
-    readonly IOptions<DocumentsWatchServiceOptions> _options;
+    readonly ILogger<DocumentsWatchService> logger;
+    readonly IOptions<DocumentsWatchServiceOptions> options;
+    readonly MarkdownConverterService service;
 
-    public DocumentsWatchService(ILogger<DocumentsWatchService> logger,
-        IOptions<DocumentsWatchServiceOptions> options
-        //MarkdownConverterService service,
-        )
+    public DocumentsWatchService(
+        ILogger<DocumentsWatchService> _logger,
+        IOptions<DocumentsWatchServiceOptions> _options,
+        MarkdownConverterService _service)
     {
-        this._logger = logger;
-        this._options = options;
-        //this._service = service;
+        logger = _logger;
+        options = _options;
+        service = _service;
     }
 
     protected override async Task ExecuteAsync(CancellationToken token)
@@ -24,7 +26,7 @@ public class DocumentsWatchService : BackgroundService
 
         var getFileProviderTaskCompletionSource = () =>
         {
-            var fileProvider = new PhysicalFileProvider(_options.Value.InputDirectry);
+            var fileProvider = new PhysicalFileProvider(options.Value.InputDirectry);
             var changeToken = fileProvider.Watch("**");
             var tcs = new TaskCompletionSource();
 
@@ -35,22 +37,22 @@ public class DocumentsWatchService : BackgroundService
 
         while (!token.IsCancellationRequested)
         {
-            _logger.LogInformation($"Start md2json conversion for updated file.");
+            logger.LogInformation($"Start md2json conversion for updated file.");
             try
             {
-                //await _service.ConvertAsync(_options.Value.InputDirectry, _options.Value.OutputDirectry, now).ConfigureAwait(false);
+                await service.ConvertAsync(options.Value.InputDirectry, options.Value.OutputDirectry, now).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "");
+                logger.LogError(ex, "");
             }
 
-            _logger.LogInformation("Watch documents updated after {now}", DateTime.Now);
+            logger.LogInformation("Watch documents updated after {now}", DateTime.Now);
             var tcs = getFileProviderTaskCompletionSource();
             using (token.Register(() =>
             {
                 // this callback will be executed when token is cancelled
-                _logger.LogInformation($"token is cancelled!");
+                logger.LogInformation($"token is cancelled!");
                 tcs.TrySetCanceled();
             }))
             {
