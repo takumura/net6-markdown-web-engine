@@ -17,7 +17,7 @@ public class MarkdownConverterService : IMarkdownConverterService
     {
         try
         {
-            await ConvertAsync(options.Input, options.OutputDir).ConfigureAwait(false);
+            await ConvertAsync(options.Input, options.OutputDir, options.IndexDir).ConfigureAwait(false);
         }
         catch (Exception)
         {
@@ -25,7 +25,7 @@ public class MarkdownConverterService : IMarkdownConverterService
         }
     }
 
-    public async ValueTask ConvertAsync(string? source, string? outputDir, DateTime? dateFrom = null)
+    public async ValueTask ConvertAsync(string? source, string? outputDir, string? indexDir, DateTime? dateFrom = null)
     {
         try
         {
@@ -46,6 +46,7 @@ public class MarkdownConverterService : IMarkdownConverterService
 
 
             // get current item list from destinationDirectory
+            logger.LogInformation("target destination directory: {Directory}", outputDir);
             var currentItems = fileManager.GetCurrentItemsFromDestination(outputDir);
 
             // both current and update have no item, we have no task to do
@@ -75,9 +76,10 @@ public class MarkdownConverterService : IMarkdownConverterService
             // create new json file
             await fileManager.CreateAddedFilesAsync(fileConversionModels.Where(x => x.Status == FileConversionModelStatusEnum.Added));
 
-            // TODO remove subfolders which has no json items
-
-            // TODO create index.json
+            if (!string.IsNullOrEmpty(indexDir))
+            {
+                await fileManager.CreateIndexJsonFileAsync(outputDir, indexDir).ConfigureAwait(false);
+            }
 
         }
         catch (Exception)
