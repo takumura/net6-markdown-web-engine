@@ -18,14 +18,14 @@ var contetRootPath = builder.Environment.ContentRootPath;
 var isDevelopment = builder.Environment.IsDevelopment();
 builder.Services.Configure<DocumentsWatchServiceOptions>(options =>
 {
-    options.InputDirectry = Path.Combine(contetRootPath, "../AngularStandalone/src/assets/docs");
+    options.InputDir = Path.Combine(contetRootPath, "../AngularStandalone/src/assets/docs");
     if (isDevelopment)
     {
-        options.OutputDirectry = Path.Combine(contetRootPath, "../AngularStandalone/src/assets/json");
+        options.OutputDir = Path.Combine(contetRootPath, "../AngularStandalone/src/assets/json");
     }
     else
     {
-        options.OutputDirectry = Path.Combine(contetRootPath, "../AngularStandalone/dist/assets/json");
+        options.OutputDir = Path.Combine(contetRootPath, "../AngularStandalone/dist/assets/json");
     }
 });
 builder.Services.AddSingleton<Microsoft.Extensions.Hosting.IHostedService, DocumentsWatchService>();

@@ -26,7 +26,7 @@ public class DocumentsWatchService : BackgroundService
 
         var getFileProviderTaskCompletionSource = () =>
         {
-            var fileProvider = new PhysicalFileProvider(options.Value.InputDirectry);
+            var fileProvider = new PhysicalFileProvider(options.Value.InputDir);
             var changeToken = fileProvider.Watch("**");
             var tcs = new TaskCompletionSource();
 
@@ -40,7 +40,7 @@ public class DocumentsWatchService : BackgroundService
             logger.LogInformation($"Start md2json conversion for updated file.");
             try
             {
-                await service.ConvertAsync(options.Value.InputDirectry, options.Value.OutputDirectry, now).ConfigureAwait(false);
+                await service.ConvertAsync(options.Value.InputDir, options.Value.OutputDir, options.Value.IndexDir, now).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
