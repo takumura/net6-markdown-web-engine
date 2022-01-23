@@ -1,10 +1,11 @@
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  selector: 'net-core-api',
+  selector: 'app-net-core-api',
   templateUrl: './net-core-api.component.html',
   styleUrls: ['./net-core-api.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NetCoreApiComponent {
   public forecasts?: WeatherForecast[];

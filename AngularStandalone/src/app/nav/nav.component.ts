@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { map, Observable } from 'rxjs';
 
@@ -6,6 +6,7 @@ import { map, Observable } from 'rxjs';
   selector: 'app-nav',
   templateUrl: './nav.component.html',
   styleUrls: ['./nav.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavComponent {
   isSmall$: Observable<boolean> = this.breakpointObserver
