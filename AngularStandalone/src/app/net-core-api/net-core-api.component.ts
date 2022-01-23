@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'net-core-api',
+  selector: 'mwe-net-core-api',
   templateUrl: './net-core-api.component.html',
   styleUrls: ['./net-core-api.component.scss'],
 })

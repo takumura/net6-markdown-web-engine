@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'homet',
+  selector: 'mwe-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })

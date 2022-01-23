@@ -20,7 +20,10 @@
     "@angular/platform-browser": "~13.1.0",
     "@angular/platform-browser-dynamic": "~13.1.0",
     "@angular/router": "~13.1.0",
+    "@fluentui/web-components": "^2.2.1",
+    "@microsoft/fast-element": "^1.6.2",
     "jest-editor-support": "*",
+    "lodash-es": "^4.17.21",
     "rxjs": "~7.4.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
