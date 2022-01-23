@@ -1,0 +1,12 @@
+.loading-overlay {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  opacity: 1;
+  z-index: 500000;
+}
+
+.top-loading {
+  height: 2px;
+}

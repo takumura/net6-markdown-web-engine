@@ -9,6 +9,7 @@ import { HomeComponent } from './home/home.component';
 import { NetCoreApiComponent } from './net-core-api/net-core-api.component';
 import { NavComponent } from './nav/nav.component';
 import { MaterialModule } from './shared/material.module';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { MaterialModule } from './shared/material.module';
     AppRoutingModule,
     BrowserAnimationsModule,
     MaterialModule,
+    SharedModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
