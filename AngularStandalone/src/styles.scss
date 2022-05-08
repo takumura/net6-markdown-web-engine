@@ -1,4 +1,15 @@
-/* You can add global styles to this file, and also import other style files */
+@use "@angular/material" as mat;
+// imports app specific variables
+@import "variables";
+
+// Include the common styles for Angular Material.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+
+// // TODO: list up required components instead of using all-component-themes
+// // Emit theme-dependent styles for common features used across multiple components.
+// @include mat.core-theme($light-theme);
+@include mat.all-component-themes($light-theme);
 
 html,
 body {
