@@ -4,7 +4,10 @@ import { Observable } from 'rxjs';
 
 import { DocumentRef } from '../store/document-ref.model';
 import { reload } from '../store/markdown-document.action';
-import { selectDocuments } from '../store/markdown-document.selectors';
+import {
+  selectDocuments,
+  selectTags,
+} from '../store/markdown-document.selectors';
 
 @Component({
   selector: 'app-search',
@@ -14,6 +17,7 @@ import { selectDocuments } from '../store/markdown-document.selectors';
 })
 export class SearchComponent implements OnInit {
   documents$: Observable<DocumentRef[]> = this.store.select(selectDocuments);
+  tags$: Observable<string[]> = this.store.select(selectTags);
 
   constructor(private store: Store) {}
 

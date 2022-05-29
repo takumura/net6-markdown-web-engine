@@ -1,0 +1,20 @@
+<a mat-list-item routerLink="{{ documentRef }}" class="list-item">
+  <p matLine>
+    <span class="mat-caption secondary-text list-item-date">{{
+      item.content.date
+    }}</span>
+    <span
+      *ngIf="item.content.category && showCategory"
+      class="list-item-category"
+    >
+      [{{ item.content.category }}]
+    </span>
+    <span class="list-item-title">{{ item.content.title }}</span>
+  </p>
+  <p *ngIf="item.content.tag" matLine>
+    <span class="mat-caption secondary-text list-item-tag">
+      <mat-icon fontSet="fa" fontIcon="fa-tags" inline></mat-icon>
+      {{ item.content.tag.join(" ") }}
+    </span>
+  </p>
+</a>

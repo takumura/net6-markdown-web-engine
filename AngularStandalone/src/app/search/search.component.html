@@ -1,2 +1,12 @@
 <p>search works!</p>
 <p>{{ (documents$ | async)?.length }}</p>
+<mat-chip-list>
+  <ng-container *ngFor="let tag of tags$ | async">
+    <app-tag [value]="tag"></app-tag>
+  </ng-container>
+</mat-chip-list>
+<mat-nav-list>
+  <ng-container *ngFor="let document of documents$ | async">
+    <app-document-list-item [item]="document"></app-document-list-item>
+  </ng-container>
+</mat-nav-list>

@@ -1,0 +1,26 @@
+@use "@angular/material" as mat;
+@import "variables";
+
+.list-item {
+  min-height: 48px;
+  height: auto;
+
+  .list-item-date {
+    float: right;
+  }
+
+  .list-item-category {
+    color: mat.get-color-from-palette($light-accent, "darker");
+  }
+
+  .list-item-title {
+    white-space: normal;
+    line-height: 24px;
+  }
+
+  .list-item-tag {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
