@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { BehaviorSubject, Observable, Subject,  } from 'rxjs';
 
 @Component({
   selector: 'app-net-core-api',
@@ -8,12 +9,13 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NetCoreApiComponent {
-  public forecasts?: WeatherForecast[];
+  public forecastsSub: BehaviorSubject<WeatherForecast[]> = new BehaviorSubject<WeatherForecast[]>([]);
+  public forecasts$: Observable<WeatherForecast[]> = this.forecastsSub.asObservable();
 
   constructor(http: HttpClient) {
     http.get<WeatherForecast[]>('/weatherforecast').subscribe(
       (result) => {
-        this.forecasts = result;
+        this.forecastsSub.next(result);
       },
       (error) => console.error(error)
     );
