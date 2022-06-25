@@ -80,7 +80,9 @@ public class FileManager
             var jsonData = await ReadToEndFileAsync(file).ConfigureAwait(false);
             var relativePath = Path.GetDirectoryName(Path.GetRelativePath(destinationDir, file));
             var fileName = Path.GetFileNameWithoutExtension(file);
-            var docRef = $"{relativePath}{Path.DirectorySeparatorChar}{fileName}";
+            var docRef = string.IsNullOrEmpty(relativePath)
+                ? fileName
+                : $"{relativePath}{Path.DirectorySeparatorChar}{fileName}";
             concurrentList.Add((docRef, jsonData));
         });
 
