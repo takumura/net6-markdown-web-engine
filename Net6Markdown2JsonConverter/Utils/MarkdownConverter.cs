@@ -34,11 +34,6 @@ public class MarkdownConverter
         // parse json string by DynaJson and add body content
         var jsonObject = JsonObject.Parse(result);
         jsonObject.body = contents.Item2;
-        // TODO
-        // some special chars seems automatically escaped
-        // might have to replace unneccesary escape chars
-        // to be reviewed
-        //return jsonObject.ToString().Replace("\\/","/");
         return jsonObject.ToString();
     }
 
@@ -48,7 +43,8 @@ public class MarkdownConverter
         foreach (var (jsonFile, index) in jsonFiles.Select((item, index) => (item, index)))
         {
             var elem = JsonObject.Parse("{}");
-            elem.docRef = jsonFile.Item1;
+            // align DirectorySeparatorChar to slash
+            elem.docRef = jsonFile.Item1.Replace("\\", "/");
             elem.content = jsonFile.Item2;
             indexJson[index] = elem.ToString();
         }
