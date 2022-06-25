@@ -6,5 +6,4 @@ export interface MarkdownDocument {
   toc: string;
   body: string;
   bodyHtml: string;
-  // safeBody: SafeHtml;
 }

@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { DocumentRef } from 'src/app/store/document-ref.model';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { DocumentRef } from 'src/app/store/models/document-ref.model';
 
 @Component({
   selector: 'app-document-list-item',
@@ -7,7 +7,7 @@ import { DocumentRef } from 'src/app/store/document-ref.model';
   styleUrls: ['./document-list-item.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DocumentListItemComponent {
+export class DocumentListItemComponent implements OnInit {
   @Input() item: DocumentRef = {
     docRef: '',
     content: {
@@ -22,9 +22,10 @@ export class DocumentListItemComponent {
   };
   @Input() showCategory: boolean = true;
 
-  documentRef: string = `/docs/${this.item?.docRef}`;
+  documentRef: string = "/doc";
 
-  constructor() {}
-
-  // ngOnInit(): void {}
+  ngOnInit(): void {
+    // TODO: need improvement
+    this.documentRef = `/doc/${this.item?.docRef.replace(/\\/g, '/')}`;
+  }
 }

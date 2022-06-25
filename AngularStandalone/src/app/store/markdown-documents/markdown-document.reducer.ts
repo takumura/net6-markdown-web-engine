@@ -1,10 +1,9 @@
 import { createReducer, on } from '@ngrx/store';
-import { DocumentRef } from './document-ref.model';
+import { DocumentRef } from '../models/document-ref.model';
 import { reload } from './markdown-document.action';
-import documentJson from '../../assets/index.json';
-import { MarkdownDocument } from './markdown-document.model';
+import documentJson from '../../../assets/index.json';
+import { MarkdownDocument } from '../models/markdown-document.model';
 
-export const featureName = 'markdownDocument';
 let documents = documentJson.map((x) => {
   const jsonObj = JSON.parse(x) as DocumentRef;
   let result: DocumentRef = {
@@ -33,11 +32,11 @@ let documents = documentJson.map((x) => {
   return result;
 });
 
-export interface State {
+export interface MarkdownDocumentState {
   documentIndex: DocumentRef[];
 }
 
-export const initialState: State = {
+export const initialState: MarkdownDocumentState = {
   documentIndex: documents,
 };
 
@@ -45,7 +44,7 @@ export const markdownDocumentReducer = createReducer(
   initialState,
   on(
     reload,
-    (state): State => ({
+    (state): MarkdownDocumentState => ({
       ...state,
       documentIndex: documents,
     })
