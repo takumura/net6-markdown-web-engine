@@ -13,6 +13,7 @@ import { DocumentRef } from '../store/models/document-ref.model';
   styleUrls: ['./document.component.scss']
 })
 export class DocumentComponent implements OnInit {
+  documentTitle: string = "";
   safeMdContent: SafeHtml | undefined;
   private documentSub: Subscription = new Subscription;
   private document$: Observable<DocumentRef> = this.store.select(selectDocument)
@@ -21,6 +22,7 @@ export class DocumentComponent implements OnInit {
 
   ngOnInit() {
     this.documentSub = this.document$.subscribe(x => {
+      this.documentTitle = x.content.title;
       this.safeMdContent = this.sanitizer.bypassSecurityTrustHtml(x.content.bodyHtml);
     });
   }

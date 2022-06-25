@@ -25,7 +25,6 @@ export class DocumentListItemComponent implements OnInit {
   documentRef: string = "/doc";
 
   ngOnInit(): void {
-    // TODO: need improvement
-    this.documentRef = `/doc/${this.item?.docRef.replace(/\\/g, '/')}`;
+    this.documentRef = `/doc/${this.item?.docRef}`;
   }
 }

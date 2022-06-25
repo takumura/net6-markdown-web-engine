@@ -27,8 +27,17 @@
     "@ngrx/store": "^13.0.2",
     "@ngrx/store-devtools": "^13.2.0",
     "jest-editor-support": "*",
+    "rehype-attr": "^2.0.8",
+    "rehype-autolink-headings": "^6.1.1",
+    "rehype-external-links": "^1.0.1",
+    "rehype-raw": "^6.1.1",
+    "rehype-slug": "^5.0.1",
+    "rehype-stringify": "^9.0.3",
+    "remark-parse": "^10.0.1",
+    "remark-rehype": "^10.1.0",
     "rxjs": "~7.4.0",
     "tslib": "^2.3.0",
+    "unified": "^10.1.2",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {

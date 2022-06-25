@@ -20,6 +20,8 @@ $light-theme: mat.define-light-theme(
   )
 );
 
+$gray: mat.define-palette(mat.$grey-palette, 500);
+
 $color-config: mat.get-color-config($light-theme);
 $is-dark-theme: map.get($color-config, "is-dark");
 

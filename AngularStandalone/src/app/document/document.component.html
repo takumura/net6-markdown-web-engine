@@ -1,4 +1,6 @@
-<p>document works!</p>
-<div *ngIf="safeMdContent">
-    <div [innerHTML]="safeMdContent"></div>
+<div class="doc-container">
+    <h1 *ngIf="documentTitle">{{ documentTitle }}</h1>
+    <div *ngIf="safeMdContent">
+        <div class="doc-body" [innerHTML]="safeMdContent"></div>
+    </div>
 </div>
