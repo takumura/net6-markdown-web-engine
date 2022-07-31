@@ -13,10 +13,10 @@ import { NetCoreApiComponent } from './net-core-api/net-core-api.component';
 import { NavComponent } from './nav/nav.component';
 import { MaterialModule } from './shared/material.module';
 import { SharedModule } from './shared/shared.module';
-import { markdownDocumentReducer } from './store/markdown-documents/markdown-document.reducer';
 import { SearchComponent } from './search/search.component';
 import { DocumentComponent } from './document/document.component';
-import { routerReducer, StoreRouterConnectingModule } from '@ngrx/router-store';
+import { StoreRouterConnectingModule } from '@ngrx/router-store';
+import { reducers, metaReducers } from './store';
 
 @NgModule({
   declarations: [
@@ -34,13 +34,13 @@ import { routerReducer, StoreRouterConnectingModule } from '@ngrx/router-store';
     BrowserAnimationsModule,
     MaterialModule,
     SharedModule,
-    StoreModule.forRoot({ markdownDocument: markdownDocumentReducer, router: routerReducer }),
+    StoreModule.forRoot(reducers, { metaReducers }),    
     // Instrumentation must be imported after importing StoreModule (config is optional)
-    StoreDevtoolsModule.instrument({
+    !environment.production ? StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
       logOnly: environment.production, // Restrict extension to log-only mode
       autoPause: true, // Pauses recording actions and state changes when the extension window is not open
-    }),
+    }) : [],
     StoreRouterConnectingModule.forRoot(),
   ],
   providers: [],

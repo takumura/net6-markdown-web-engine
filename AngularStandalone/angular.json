@@ -111,6 +111,6 @@
   },
   "defaultProject": "net6-markdown-web-engine",
   "cli": {
-    "defaultCollection": "@angular-eslint/schematics"
+    "defaultCollection": "@ngrx/schematics"
   }
 }
