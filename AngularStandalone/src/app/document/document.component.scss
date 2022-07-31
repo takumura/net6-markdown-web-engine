@@ -8,13 +8,11 @@
 
 ::ng-deep .internal-link {
     cursor: pointer;
-    // color: mat-color($karen-md-accent);
     color: mat.get-color-from-palette($light-accent, "darker");
     text-decoration: underline;
 }
 
 ::ng-deep a {
-    // color: mat-color($karen-md-primary);
     color: mat.get-color-from-palette($light-primary);
 }
 
@@ -26,7 +24,6 @@
 
 ::ng-deep table td,
 ::ng-deep table th {
-    // border: 1px solid map_get($mat-grey, 300);
     border: 1px solid mat.get-color-from-palette($gray, 300);
     padding: 6px 13px;
 }
@@ -54,8 +51,7 @@
     margin: 32px 0 8px 0;
 }
 
-::ng-deep code {
-    // background: map_get($mat-grey, 300);
+::ng-deep code:not(.code-highlight) {
     background: mat.get-color-from-palette($gray, 300);
     font-family: Consolas, 'Courier New', Courier, Monaco, monospace;
     padding: 2px;
@@ -112,10 +108,7 @@
     font-style: italic;
     background: mat.get-color-from-palette($gray, 100);
     color: mat.get-color-from-palette($gray, 600);
-    // background: map_get($mat-grey, 100);
-    // color: map_get($mat-grey, 600);
     border-left: 4px solid mat.get-color-from-palette($light-primary);
-    // border-left: 4px solid mat-color($karen-md-primary);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.14);
 }
 
@@ -127,7 +120,6 @@
     vertical-align: middle;
     content: '"';
     color: mat.get-color-from-palette($light-primary);
-    // color: mat-color($karen-md-primary);
     font-size: 4em;
     line-height: 1;
 }
