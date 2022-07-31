@@ -1,7 +1,11 @@
 ﻿using System.Collections.Concurrent;
 using System.Security.Cryptography;
 using System.Text;
+
 using Microsoft.Extensions.Logging;
+
+using Polly;
+using Polly.Retry;
 
 namespace Net6MarkdownWebEngine.Converter;
 
@@ -303,16 +307,29 @@ public class FileManager
         return result;
     }
 
+    private AsyncRetryPolicy GetRetryPolicy()
+    {
+        return Policy.Handle<IOException>()
+            .WaitAndRetryAsync(4,
+                sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
+                onRetry: (exception, retryCount) =>
+                {
+                    logger.LogInformation($"catch IOException, retrying... ({retryCount})");
+                }
+            );
+    }
+
     private async ValueTask<string> ReadToEndFileAsync(string filePath)
     {
         logger.LogTrace($"read file: {filePath}");
         var result = string.Empty;
-        using (var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read, fileStreamBufferSize, FileOptions.Asynchronous))
-        using (var streamReader = new StreamReader(fileStream, Encoding.UTF8))
-        {
-            result = await streamReader.ReadToEndAsync().ConfigureAwait(false);
-        }
 
+        result = await GetRetryPolicy().ExecuteAsync(async () =>
+        {
+            using var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read, fileStreamBufferSize, FileOptions.Asynchronous);
+            using var streamReader = new StreamReader(fileStream, Encoding.UTF8);
+            return await streamReader.ReadToEndAsync();
+        });
         return result;
     }
 
@@ -322,11 +339,12 @@ public class FileManager
         var targetFolder = Path.GetDirectoryName(jsonFilePath) ?? "";
         if (!Directory.Exists(targetFolder)) Directory.CreateDirectory(targetFolder);
 
-        using (var fileStream = new FileStream(jsonFilePath, FileMode.Create, FileAccess.Write, FileShare.Write, fileStreamBufferSize, FileOptions.Asynchronous))
-        using (var streamWriter = new StreamWriter(fileStream))
+        await GetRetryPolicy().ExecuteAsync(async () =>
         {
-            await streamWriter.WriteAsync(jsonText).ConfigureAwait(false);
-        }        
+            using var fileStream = new FileStream(jsonFilePath, FileMode.Create, FileAccess.Write, FileShare.Write, fileStreamBufferSize, FileOptions.Asynchronous);
+            using var streamWriter = new StreamWriter(fileStream);
+            await streamWriter.WriteAsync(jsonText);
+        });
     }
 }
 
