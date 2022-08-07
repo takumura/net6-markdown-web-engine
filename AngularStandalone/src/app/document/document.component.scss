@@ -1,0 +1,142 @@
+@use "@angular/material" as mat;
+@import "variables";
+
+.doc-container {
+    margin: 0 16px 24px 16px;
+    font-size: 16px;
+}
+
+::ng-deep .internal-link {
+    cursor: pointer;
+    color: mat.get-color-from-palette($light-accent, "darker");
+    text-decoration: underline;
+}
+
+::ng-deep a {
+    color: mat.get-color-from-palette($light-primary);
+}
+
+::ng-deep table {
+    margin-left: 1em;
+    margin-bottom: 32px;
+    border-collapse: collapse;
+}
+
+::ng-deep table td,
+::ng-deep table th {
+    border: 1px solid mat.get-color-from-palette($gray, 300);
+    padding: 6px 13px;
+}
+
+::ng-deep h1 {
+    margin-top: 8px;
+    margin-bottom: 0px;
+}
+
+::ng-deep h2 {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 48px 0 24px 0;
+
+    &:first-child {
+        margin-top: 24px;
+    }
+}
+
+::ng-deep h3 {
+    margin: 40px 0 16px 0;
+}
+
+::ng-deep h4 {
+    margin: 32px 0 8px 0;
+}
+
+::ng-deep code:not(.code-highlight) {
+    background: mat.get-color-from-palette($gray, 300);
+    font-family: Consolas, 'Noto Sans JP', 'Courier New', Courier, Monaco, monospace;
+    padding: 2px;
+    overflow-x: auto;
+    font-size: inherit;
+}
+
+::ng-deep pre {
+    font-size: inherit;
+}
+
+::ng-deep dl {
+    padding-left: 1em;
+}
+
+::ng-deep dl dt {
+    font-style: italic;
+    font-weight: 700;
+    margin-top: 16px;
+}
+
+::ng-deep .doc-body ol {
+    padding-left: 16px;
+    margin-bottom: 16px;
+
+    li {
+        margin: 8px 0;
+
+        p {
+            margin: 0 0;
+        }
+    }
+}
+
+::ng-deep .doc-body ul {
+    padding-left: 20px;
+    margin-bottom: 16px;
+
+    li {
+        margin: 8px 0;
+
+        p {
+            margin: 0 0;
+        }
+    }
+}
+
+::ng-deep blockquote {
+    position: relative;
+    margin-top: 16px;
+    margin-bottom: 40px;
+    padding: 10px 15px 10px 60px;
+    box-sizing: border-box;
+    font-style: italic;
+    background: mat.get-color-from-palette($gray, 100);
+    color: mat.get-color-from-palette($gray, 600);
+    border-left: 4px solid mat.get-color-from-palette($light-primary);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.14);
+}
+
+::ng-deep blockquote:before {
+    display: inline-block;
+    position: absolute;
+    top: 0px;
+    left: 5px;
+    vertical-align: middle;
+    content: '"';
+    color: mat.get-color-from-palette($light-primary);
+    font-size: 4em;
+    line-height: 1;
+}
+
+::ng-deep blockquote p {
+    padding: 0;
+    margin: 7px 0;
+    line-height: 1.7;
+}
+
+::ng-deep blockquote cite {
+    display: block;
+    text-align: right;
+    font-size: 0.9em;
+}
+
+::ng-deep img {
+    display: block;
+    margin-bottom: 1em;
+}

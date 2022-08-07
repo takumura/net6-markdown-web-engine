@@ -1,0 +1,42 @@
+mat-toolbar.header {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  z-index: 4;
+}
+
+.toolbar-title {
+  padding-left: 16px;
+}
+
+mat-sidenav-container.sidenav-container {
+  min-height: 100%;
+  height: auto;
+  max-width: 100%;
+}
+
+mat-sidenav-container {
+  .mat-sidenav-content {
+    padding: 72px 1rem 2rem;
+  }
+
+  mat-sidenav.mat-sidenav.sidenav {
+    position: fixed;
+    top: 64px;
+    bottom: 0;
+    left: 0;
+    padding: 0;
+    min-width: 192px;
+    box-shadow: 4px 0 4px rgba(0, 0, 0, 0.1);
+    &.collapsed {
+      top: 56px;
+    }
+
+    @media (max-width: 600px) {
+      /* On small screens, the nav menu spans the full width of the screen. Leave a space for it. */
+      top: 50px;
+    }
+  }
+}

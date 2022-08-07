@@ -1,0 +1,23 @@
+@use "@angular/material" as mat;
+// imports app specific variables
+@import "variables";
+
+// Include the common styles for Angular Material.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+
+// // TODO: list up required components instead of using all-component-themes
+// // Emit theme-dependent styles for common features used across multiple components.
+// @include mat.core-theme($light-theme);
+@include mat.all-component-themes($light-theme);
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: "Noto Sans JP", "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

@@ -1,0 +1,32 @@
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use "sass:map";
+@use "@angular/material" as mat;
+
+$light-primary: mat.define-palette(mat.$indigo-palette, 500);
+$light-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+$light-typograhy: mat.define-typography-config(
+  $font-family: 'Noto Sans JP'
+);
+
+// The "warn" palette is optional and defaults to red if not specified.
+$light-warn: mat.define-palette(mat.$red-palette);
+
+// Create the theme object (a Sass map containing all of the palettes).
+$light-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $light-primary,
+      accent: $light-accent,
+      warn: $light-warn,
+    ),
+    typography: $light-typograhy,
+  )
+);
+
+$gray: mat.define-palette(mat.$grey-palette, 500);
+
+$color-config: mat.get-color-config($light-theme);
+$is-dark-theme: map.get($color-config, "is-dark");
+
+// $foreground: map-get($karen-md-theme, foreground);
