@@ -1,6 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
-import { MarkdownDocumentState } from './markdown-document.reducer';
+import * as fromMarkdownDocument from './markdown-document.reducer';
 import { selectUrl } from '../router/router.selector';
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
@@ -13,8 +13,9 @@ import rehypeExternalLinks from 'rehype-external-links';
 import rehypeAttrs from 'rehype-attr';
 import rehypePrismPlus from 'rehype-prism-plus'
 
-export const selectMarkdownDocumentState =
-  createFeatureSelector<MarkdownDocumentState>("markdownDocument");
+
+const selectMarkdownDocumentState =
+  createFeatureSelector<fromMarkdownDocument.State>(fromMarkdownDocument.featureKey);
 
 export const selectDocuments = createSelector(
   selectMarkdownDocumentState,

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
@@ -12,7 +12,7 @@ import { DocumentRef } from '../store/models/document-ref.model';
   templateUrl: './document.component.html',
   styleUrls: ['./document.component.scss']
 })
-export class DocumentComponent implements OnInit {
+export class DocumentComponent implements OnInit, OnDestroy {
   documentTitle: string = "";
   safeMdContent: SafeHtml | undefined;
   private documentSub: Subscription = new Subscription;
@@ -30,5 +30,4 @@ export class DocumentComponent implements OnInit {
   ngOnDestroy() {
     this.documentSub?.unsubscribe();
   }
-
 }

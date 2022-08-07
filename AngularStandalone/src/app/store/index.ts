@@ -7,16 +7,13 @@ import {
   MetaReducer
 } from '@ngrx/store';
 import { environment } from '../../environments/environment';
-import { markdownDocumentReducer } from './markdown-documents/markdown-document.reducer';
+import * as fromMarkdownDocument from './markdown-documents/markdown-document.reducer';
 
-export interface State {
-
-}
+interface State {}
 
 export const reducers: ActionReducerMap<State> = {
-  markdownDocument: markdownDocumentReducer,
+  markdownDocument: fromMarkdownDocument.reducer,
   router: routerReducer,
 };
-
 
 export const metaReducers: MetaReducer<State>[] = !environment.production ? [] : [];

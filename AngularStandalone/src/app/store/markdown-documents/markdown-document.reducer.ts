@@ -1,4 +1,4 @@
-import { createReducer, on } from '@ngrx/store';
+import { Action, createReducer, on } from '@ngrx/store';
 import { DocumentRef } from '../models/document-ref.model';
 import { reload } from './markdown-document.action';
 import documentJson from '../../../assets/index.json';
@@ -32,21 +32,27 @@ let documents = documentJson.map((x) => {
   return result;
 });
 
-export interface MarkdownDocumentState {
-  documentIndex: DocumentRef[];
-}
-
-export const initialState: MarkdownDocumentState = {
+const initialState: State = {
   documentIndex: documents,
 };
 
-export const markdownDocumentReducer = createReducer(
+const markdownDocumentReducer = createReducer(
   initialState,
   on(
     reload,
-    (state): MarkdownDocumentState => ({
+    (state): State => ({
       ...state,
       documentIndex: documents,
     })
   )
 );
+
+export const featureKey= "markdownDocument";
+
+export interface State {
+  documentIndex: DocumentRef[];
+}
+
+export function reducer(state: State | undefined, action: Action) {
+  return markdownDocumentReducer(state, action);
+}
