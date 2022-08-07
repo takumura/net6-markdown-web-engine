@@ -10,7 +10,8 @@ const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'search', component: SearchComponent },
   {
-    path: 'doc/:ref', children: [
+    path: 'doc/:ref',
+    children: [
       {
         path: '**',
         component: DisplayComponent,
@@ -24,4 +25,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

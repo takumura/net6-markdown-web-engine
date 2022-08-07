@@ -13,7 +13,7 @@ import { DisplayComponent } from './display/display.component';
     CommonModule,
     MaterialModule,
     SharedModule,
-    StoreModule.forFeature(fromMarkdownDocument.featureKey, fromMarkdownDocument.reducer)
-  ]
+    StoreModule.forFeature(fromMarkdownDocument.featureKey, fromMarkdownDocument.reducer),
+  ],
 })
-export class MarkdownDocumentModule { }
+export class MarkdownDocumentModule {}

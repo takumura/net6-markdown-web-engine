@@ -18,12 +18,7 @@ import { reducers, metaReducers } from './store';
 import { MarkdownDocumentModule } from './markdown-document/markdown-document.module';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HomeComponent,
-    NetCoreApiComponent,
-    NavComponent,
-  ],
+  declarations: [AppComponent, HomeComponent, NetCoreApiComponent, NavComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
@@ -32,16 +27,18 @@ import { MarkdownDocumentModule } from './markdown-document/markdown-document.mo
     MaterialModule,
     SharedModule,
     MarkdownDocumentModule,
-    StoreModule.forRoot(reducers, { metaReducers }),    
+    StoreModule.forRoot(reducers, { metaReducers }),
     // Instrumentation must be imported after importing StoreModule (config is optional)
-    !environment.production ? StoreDevtoolsModule.instrument({
-      maxAge: 25, // Retains last 25 states
-      logOnly: environment.production, // Restrict extension to log-only mode
-      autoPause: true, // Pauses recording actions and state changes when the extension window is not open
-    }) : [],
+    !environment.production
+      ? StoreDevtoolsModule.instrument({
+          maxAge: 25, // Retains last 25 states
+          logOnly: environment.production, // Restrict extension to log-only mode
+          autoPause: true, // Pauses recording actions and state changes when the extension window is not open
+        })
+      : [],
     StoreRouterConnectingModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

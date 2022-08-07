@@ -1,19 +1,8 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { delay, filter, map, Observable, Subject, takeUntil } from 'rxjs';
 import { LoadingBarService } from '../shared/loading-bar/loading-bar.service';
-import {
-  NavigationCancel,
-  NavigationEnd,
-  NavigationError,
-  NavigationStart,
-  Router,
-} from '@angular/router';
+import { NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
 
 @Component({
   selector: 'app-nav',
@@ -47,9 +36,7 @@ export class NavComponent implements OnInit, OnDestroy {
       .pipe(
         filter(
           (event) =>
-            event instanceof NavigationEnd ||
-            event instanceof NavigationCancel ||
-            event instanceof NavigationError
+            event instanceof NavigationEnd || event instanceof NavigationCancel || event instanceof NavigationError
         ),
         delay(1000),
         takeUntil(this.onDestroy)
