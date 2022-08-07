@@ -47,9 +47,10 @@
 }
 
 ::ng-deep code:not(.code-highlight) {
-  background: mat.get-color-from-palette($gray, 300);
+  background: mat.get-color-from-palette($light-primary, lighter);
   font-family: Consolas, "Noto Sans JP", "Courier New", Courier, Monaco, monospace;
   padding: 2px;
+  margin: 2px;
   overflow-x: auto;
   font-size: inherit;
 }

@@ -1,0 +1,8 @@
+@use "@angular/material" as mat;
+@import "variables";
+
+.tag-container {
+  border-bottom: 1px solid mat.get-color-from-palette($light-primary, "darker");
+  padding: 8px 2px;
+  margin-bottom: 16px;
+}
