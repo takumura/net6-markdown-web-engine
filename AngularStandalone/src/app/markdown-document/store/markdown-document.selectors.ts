@@ -1,7 +1,7 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import * as fromMarkdownDocument from './markdown-document.reducer';
-import { selectUrl } from '../router/router.selector';
+import { selectUrl } from '../../store/router/router.selector';
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
 import remarkRehype from 'remark-rehype';

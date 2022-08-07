@@ -13,10 +13,9 @@ import { NetCoreApiComponent } from './net-core-api/net-core-api.component';
 import { NavComponent } from './nav/nav.component';
 import { MaterialModule } from './shared/material.module';
 import { SharedModule } from './shared/shared.module';
-import { SearchComponent } from './search/search.component';
-import { DocumentComponent } from './document/document.component';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { reducers, metaReducers } from './store';
+import { MarkdownDocumentModule } from './markdown-document/markdown-document.module';
 
 @NgModule({
   declarations: [
@@ -24,8 +23,6 @@ import { reducers, metaReducers } from './store';
     HomeComponent,
     NetCoreApiComponent,
     NavComponent,
-    SearchComponent,
-    DocumentComponent,
   ],
   imports: [
     BrowserModule,
@@ -34,6 +31,7 @@ import { reducers, metaReducers } from './store';
     BrowserAnimationsModule,
     MaterialModule,
     SharedModule,
+    MarkdownDocumentModule,
     StoreModule.forRoot(reducers, { metaReducers }),    
     // Instrumentation must be imported after importing StoreModule (config is optional)
     !environment.production ? StoreDevtoolsModule.instrument({

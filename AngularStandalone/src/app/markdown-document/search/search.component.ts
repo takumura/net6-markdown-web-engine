@@ -2,12 +2,12 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
-import { DocumentRef } from '../store/models/document-ref.model';
-import { reload } from '../store/markdown-documents/markdown-document.action';
+import { DocumentRef } from '../../store/models/document-ref.model';
+import { reload } from '../store/markdown-document.action';
 import {
   selectDocuments,
   selectTags,
-} from '../store/markdown-documents/markdown-document.selectors';
+} from '../store/markdown-document.selectors';
 
 @Component({
   selector: 'app-search',

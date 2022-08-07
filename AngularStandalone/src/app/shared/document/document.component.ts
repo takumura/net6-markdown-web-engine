@@ -3,9 +3,9 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
-import { selectDocument } from '../store/markdown-documents/markdown-document.selectors';
+import { selectDocument } from '../../markdown-document/store/markdown-document.selectors';
 
-import { DocumentRef } from '../store/models/document-ref.model';
+import { DocumentRef } from '../../store/models/document-ref.model';
 
 @Component({
   selector: 'app-document',
