@@ -11,74 +11,55 @@ import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeStringify from 'rehype-stringify';
 import rehypeExternalLinks from 'rehype-external-links';
 import rehypeAttrs from 'rehype-attr';
-import rehypePrismPlus from 'rehype-prism-plus'
+import rehypePrismPlus from 'rehype-prism-plus';
+import { initialMarkdownDocumentModel } from 'src/app/store/models/markdown-document.model';
 
+const selectMarkdownDocumentState = createFeatureSelector<fromMarkdownDocument.State>(fromMarkdownDocument.featureKey);
 
-const selectMarkdownDocumentState =
-  createFeatureSelector<fromMarkdownDocument.State>(fromMarkdownDocument.featureKey);
+export const selectDocuments = createSelector(selectMarkdownDocumentState, (state) => state?.documentIndex);
 
-export const selectDocuments = createSelector(
-  selectMarkdownDocumentState,
-  (state) => state?.documentIndex
-);
+export const selectTags = createSelector(selectMarkdownDocumentState, (state) => {
+  const docTags = state?.documentIndex.map((x) => {
+    const content = x.content;
+    return content.tag;
+  });
+  const tags = docTags.reduce((acc, curr) => acc.concat(curr), []);
 
-export const selectTags = createSelector(
-  selectMarkdownDocumentState,
-  (state) => {
-    const docTags = state?.documentIndex.map((x) => {
-      const content = x.content;
-      return content.tag;
-    });
-    const tags = docTags.reduce((acc, curr) => acc.concat(curr), []);
+  const result = new Set<string>(tags);
+  return Array.from(result)
+    .filter((x) => x !== undefined && x !== null)
+    .sort();
+});
 
-    const result = new Set<string>(tags);
-    return Array.from(result)
-      .filter((x) => x !== undefined && x !== null)
-      .sort();
+export const selectDocument = createSelector(selectDocuments, selectUrl, (documents, url) => {
+  let defaultModel = {
+    docRef: '',
+    content: initialMarkdownDocumentModel,
+  };
+
+  if (!url.startsWith('/doc')) {
+    return defaultModel;
   }
-);
 
-export const selectDocument = createSelector(
-  selectDocuments,
-  selectUrl,
-  (documents, url) => {
-    let defaultModel = {
-      docRef: '',
-      content: {
-        title: '',
-        date: '',
-        category: '',
-        tag: [],
-        toc: '',
-        body: '',
-        bodyHtml: '',
-      }
-    };
+  let document = documents?.find((x) => x.docRef === url.substring(5, url.length)) ?? defaultModel;
 
-    if (!url.startsWith("/doc")) {
-      return defaultModel;
-    }
+  // TODO: only import required language for highlight if those make vendor.js file so big
+  const processor = unified()
+    .use(remarkParse)
+    .use(remarkRehype, { allowDangerousHtml: true })
+    .use(rehypeRaw)
+    .use(rehypeSlug)
+    .use(rehypeAutolinkHeadings)
+    .use(rehypeExternalLinks, { target: '_blank', rel: ['noopener'] })
+    .use(rehypeAttrs, { properties: 'attr' })
+    .use(rehypePrismPlus, { showLineNumbers: true })
+    .use(rehypeStringify);
+  const html = String(processor.processSync(document.content.body));
 
-    let document = documents?.find(x => x.docRef === url.substring(5, url.length)) ?? defaultModel;
+  const result = {
+    docRef: document.docRef,
+    content: { ...document.content, bodyHtml: html },
+  };
 
-    // TODO: only import required language for highlight if those make vendor.js file so big
-    const processor = unified()
-      .use(remarkParse)
-      .use(remarkRehype, { allowDangerousHtml: true })
-      .use(rehypeRaw)
-      .use(rehypeSlug)
-      .use(rehypeAutolinkHeadings)
-      .use(rehypeExternalLinks, { target: '_blank', rel: ['noopener'] })
-      .use(rehypeAttrs, { properties: 'attr' })
-      .use(rehypePrismPlus, { showLineNumbers: true })
-      .use(rehypeStringify);
-    const html = String(processor.processSync(document.content.body));
-
-    const result = {
-      docRef: document.docRef,
-      content: { ...document.content, bodyHtml: html }
-    }
-
-    return result;
-  }
-);
+  return result;
+});

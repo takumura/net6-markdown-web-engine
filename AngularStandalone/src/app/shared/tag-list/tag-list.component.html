@@ -1,0 +1,5 @@
+<mat-chip-list *ngIf="tags">
+  <ng-container *ngFor="let tag of tags">
+    <app-tag [value]="tag"></app-tag>
+  </ng-container>
+</mat-chip-list>

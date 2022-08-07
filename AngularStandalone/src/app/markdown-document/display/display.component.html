@@ -1,2 +1,4 @@
-<app-document></app-document>
-
+<div class="doc-container">
+  <app-document-header [document]="(document$ | async)?.content"></app-document-header>
+  <app-document></app-document>
+</div>
