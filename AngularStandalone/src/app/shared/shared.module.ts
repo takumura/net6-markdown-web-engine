@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterModule, TitleStrategy } from '@angular/router';
 
 import { LoadingBarComponent } from './loading-bar/loading-bar.component';
 import { LoadingBarService } from './loading-bar/loading-bar.service';
@@ -10,6 +10,7 @@ import { DocumentListItemComponent } from './document-list-item/document-list-it
 import { DocumentComponent } from './document/document.component';
 import { DocumentHeaderComponent } from './document-header/document-header.component';
 import { TagListComponent } from './tag-list/tag-list.component';
+import { MyTitleStrategyService } from './services/markdown-document-title-strategy.service';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,6 @@ import { TagListComponent } from './tag-list/tag-list.component';
     DocumentHeaderComponent,
     TagListComponent,
   ],
-  providers: [LoadingBarService],
+  providers: [LoadingBarService, { provide: TitleStrategy, useClass: MyTitleStrategyService }],
 })
 export class SharedModule {}
