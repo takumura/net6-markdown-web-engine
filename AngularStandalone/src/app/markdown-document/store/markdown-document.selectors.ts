@@ -63,3 +63,7 @@ export const selectDocument = createSelector(selectDocuments, selectUrl, (docume
 
   return result;
 });
+
+export const selectDocumentTitle = createSelector(selectDocument, (document) => {
+  return document?.content?.title;
+});

@@ -3,6 +3,7 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { delay, filter, map, Observable, Subject, takeUntil } from 'rxjs';
 import { LoadingBarService } from '../shared/loading-bar/loading-bar.service';
 import { NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-nav',
@@ -14,6 +15,7 @@ export class NavComponent implements OnInit, OnDestroy {
   isSmall$: Observable<boolean> = this.breakpointObserver
     .observe([Breakpoints.XSmall, Breakpoints.Small])
     .pipe(map((result) => result.matches));
+  env = environment;
   private onDestroy = new Subject<void>();
 
   constructor(

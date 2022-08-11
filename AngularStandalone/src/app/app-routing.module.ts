@@ -7,8 +7,8 @@ import { SearchComponent } from './markdown-document/search/search.component';
 import { DisplayComponent } from './markdown-document/display/display.component';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },
-  { path: 'search', component: SearchComponent },
+  { path: '', component: HomeComponent, title: 'Home' },
+  { path: 'search', component: SearchComponent, title: 'Search' },
   {
     path: 'doc/:ref',
     children: [
