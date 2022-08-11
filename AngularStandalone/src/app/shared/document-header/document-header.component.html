@@ -1,0 +1,8 @@
+<div class="header-grid mat-caption hint-text">
+  <div *ngIf="document?.category">Category: {{ document?.category }}</div>
+  <div *ngIf="document?.date">Last Update: {{ document?.date }}</div>
+</div>
+<h1 *ngIf="document?.title">{{ document?.title }}</h1>
+<div class="tag-container">
+  <app-tag-list [tags]="document?.tag"></app-tag-list>
+</div>

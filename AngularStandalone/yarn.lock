@@ -1415,6 +1415,11 @@
   resolved "https://registry.yarnpkg.com/@jridgewell/resolve-uri/-/resolve-uri-1.0.0.tgz#3fdf5798f0b49e90155896f6291df186eac06c83"
   integrity sha512-9oLAnygRMi8Q5QkYEU4XWK04B+nuoXoxjRvRxgjuChkLZFBja0YPSgdZ7dZtwhncLBcQe/I/E+fLuk5qxcYVJA==
 
+"@mdi/angular-material@^7.0.96":
+  version "7.0.96"
+  resolved "https://registry.yarnpkg.com/@mdi/angular-material/-/angular-material-7.0.96.tgz#bc083122a5b2cfad2fe0192003da8c786114f999"
+  integrity sha512-OhDDOHSKstrG4jozg9d/0yOxeqRwAqsgkwOWWKwC8wYwbS1jErzKvOFT3mu+8Wk7GB77Coi9JrRxAVmlQEq84w==
+
 "@ngrx/effects@^13.2.0":
   version "13.2.0"
   resolved "https://registry.yarnpkg.com/@ngrx/effects/-/effects-13.2.0.tgz#36aba5af45ac034419509f799ed70acdb80228b1"
