@@ -1,8 +1,36 @@
-<p>search works!</p>
-<p>{{ (documents$ | async)?.length }}</p>
-<app-tag-list [tags]="tags$ | async"></app-tag-list>
-<mat-nav-list>
-  <ng-container *ngFor="let document of documents$ | async">
-    <app-document-list-item [item]="document"></app-document-list-item>
-  </ng-container>
-</mat-nav-list>
+<div class="search-grid">
+  <div class="search-form-container">
+    <mat-form-field class="search-input-form" appearance="outline">
+      <mat-label>Search</mat-label>
+      <input matInput type="text" placeholder="please input search keyword..." [formControl]="searchInputForm" />
+      <button
+        mat-button
+        *ngIf="searchInputForm.value"
+        matSuffix
+        mat-icon-button
+        aria-label="Clear"
+        (click)="clearSearchInput()"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+  <div class="search-option-container">
+    <mat-form-field appearance="fill">
+      <mat-label>Sort</mat-label>
+      <mat-select [formControl]="searchOptionForm">
+        <mat-option *ngFor="let option of sortByOptions$ | async" [value]="option.key">
+          {{ option.value }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <!-- <app-tag-list [tags]="tags$ | async"></app-tag-list> -->
+  <mat-nav-list class="search-result-container">
+    <cdk-virtual-scroll-viewport itemSize="10" class="search-result-vscroll">
+      <ng-container *ngFor="let document of documents$ | async">
+        <app-document-list-item [item]="document"></app-document-list-item>
+      </ng-container>
+    </cdk-virtual-scroll-viewport>
+  </mat-nav-list>
+</div>

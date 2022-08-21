@@ -1,8 +1,21 @@
 import { Action, createReducer, on } from '@ngrx/store';
-import { DocumentRef } from '../../store/models/document-ref.model';
-import { reload } from './markdown-document.action';
-import documentJson from '../../../assets/index.json';
-import { initialMarkdownDocumentModel, MarkdownDocument } from '../../store/models/markdown-document.model';
+
+import lunr from 'lunr';
+import documentJson from 'src/assets/index.json';
+import ja from 'src/app/markdown-document/lunr.ja.js';
+import { searchResultSortBy } from 'src/app/markdown-document/search/sort-by-options.interface';
+import { DocumentRef } from 'src/app/store/models/document-ref.model';
+import { DocumentSearch } from 'src/app/store/models/document-search.model';
+import { initialMarkdownDocumentModel, MarkdownDocument } from 'src/app/store/models/markdown-document.model';
+import { loadDocuments, searchDocuments } from './markdown-document.action';
+
+type Ilunr = (config: lunr.ConfigFunction) => lunr.Index;
+type JPlunr = Ilunr & {
+  ja: any;
+};
+
+// Setup Japanese support for lunr
+ja(lunr);
 
 let documents = documentJson.map((x) => {
   const jsonObj = JSON.parse(x) as DocumentRef;
@@ -24,25 +37,43 @@ let documents = documentJson.map((x) => {
   return result;
 });
 
+export const lunrIndex = lunr((builder) => {
+  builder.use((lunr as unknown as JPlunr).ja);
+  builder.field('title', { extractor: (doc: {}) => (doc as DocumentRef).content.title });
+  builder.field('category', { extractor: (doc: {}) => (doc as DocumentRef).content.category });
+  builder.field('body', { extractor: (doc: {}) => (doc as DocumentRef).content.body });
+  builder.ref('docRef');
+
+  documents.forEach((doc) => {
+    builder.add(doc);
+  });
+});
+
 const initialState: State = {
   documentIndex: documents,
+  documentSearch: { searchWord: '', tag: '', sortBy: searchResultSortBy.dateLatest },
 };
 
 const markdownDocumentReducer = createReducer(
   initialState,
   on(
-    reload,
+    loadDocuments,
     (state): State => ({
       ...state,
       documentIndex: documents,
     })
-  )
+  ),
+  on(searchDocuments, (state: State, payload) => ({
+    ...state,
+    documentSearch: { searchWord: payload.search, tag: state.documentSearch.tag, sortBy: payload.sortBy ?? 0 },
+  }))
 );
 
 export const featureKey = 'markdownDocument';
 
 export interface State {
   documentIndex: DocumentRef[];
+  documentSearch: DocumentSearch;
 }
 
 export function reducer(state: State | undefined, action: Action) {

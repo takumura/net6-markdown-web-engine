@@ -1,0 +1,38 @@
+@use "@angular/material" as mat;
+@import "variables";
+
+.search-grid {
+  display: grid;
+  height: Calc(100vh - 105px);
+  grid-template-columns: 100%;
+  grid-template-rows: minmax(50px, auto) minmax(50px, auto) Calc(100vh - 280px);
+  align-content: start;
+}
+
+.search-form-container {
+  display: grid;
+  place-items: center;
+  grid-template-columns: 100%;
+}
+
+.search-input-form {
+  width: 80%;
+}
+
+.search-option-container {
+  display: grid;
+  border-top: 2px ridge mat.get-color-from-palette($light-primary, lighter);
+  padding: 8px 2px;
+  justify-content: end;
+}
+
+.search-result-container {
+  display: grid;
+  height: 100%;
+  padding: 8px 2px;
+  align-self: center;
+}
+
+.search-result-vscroll {
+  height: 100%;
+}
