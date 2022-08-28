@@ -33,17 +33,28 @@ export class SearchComponent implements OnInit, OnDestroy {
     { key: searchResultSortBy.hitIndex, value: 'by hit index' },
   ];
   sortByOptionsSub = new BehaviorSubject<sortByOption[]>(this.sortByOptions);
-  viewType = searchResultViewType;
+  viewTypeModel = searchResultViewType;
 
   documents$: Observable<DocumentRef[]> = this.store.select(selectSearchedDocuments);
   sortByOptions$: Observable<sortByOption[]> = this.sortByOptionsSub.asObservable();
   tags$: Observable<string[]> = this.store.select(selectTags);
   viewType$: Observable<number> = this.store.select(selectViewType);
+  private currentViewType: number = 0;
   private onDestroy = new Subject<void>();
 
   constructor(private store: Store) {}
 
   ngOnInit(): void {
+    this.searchOptionForm.valueChanges.pipe(takeUntil(this.onDestroy)).subscribe((_) => {
+      this.searchDocumentInternal();
+    });
+
+    this.searchInputForm.valueChanges
+      .pipe(debounceTime(1000), distinctUntilChanged(), takeUntil(this.onDestroy))
+      .subscribe((_) => {
+        this.searchDocumentInternal();
+      });
+
     this.store
       .select(selectSearchWord)
       .pipe(takeUntil(this.onDestroy))
@@ -51,16 +62,11 @@ export class SearchComponent implements OnInit, OnDestroy {
         this.searchInputForm.setValue(searchWord);
       });
 
-    this.store.dispatch(loadDocuments());
-
-    this.searchOptionForm.valueChanges.pipe(takeUntil(this.onDestroy)).subscribe((_) => {
-      this.searchDocumentInternal();
+    this.viewType$.pipe(takeUntil(this.onDestroy)).subscribe((x) => {
+      this.currentViewType = x;
     });
-    this.searchInputForm.valueChanges
-      .pipe(debounceTime(1000), distinctUntilChanged(), takeUntil(this.onDestroy))
-      .subscribe((_) => {
-        this.searchDocumentInternal();
-      });
+
+    this.store.dispatch(loadDocuments());
   }
 
   ngOnDestroy(): void {
@@ -74,7 +80,9 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   updateViewType(viewType: number) {
-    this.store.dispatch(updateViewType({ viewType: viewType }));
+    if (this.currentViewType !== viewType) {
+      this.store.dispatch(updateViewType({ viewType: viewType }));
+    }
   }
 
   private searchDocumentInternal() {

@@ -35,7 +35,6 @@ export const selectSearchedDocuments = createSelector(selectMarkdownDocumentStat
   const index: Index.Result[] = fromMarkdownDocument.lunrIndex.search(state.documentSearch.searchWord);
   if (index) {
     const refs = index.map((x) => x.ref);
-    // const filteredDocuments = state?.documentIndex.filter((x) => refs.some((ref) => x.docRef === ref));
     const filteredDocuments = refs.flatMap((x) => state?.documentIndex.filter((doc) => doc.docRef === x));
     return getOrderedDocumentIndex(state, filteredDocuments);
   } else {

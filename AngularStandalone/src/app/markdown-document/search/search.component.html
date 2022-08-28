@@ -18,14 +18,14 @@
   <div class="search-options-container">
     <div class="search-options-list-container">
       <mat-icon
-        [ngClass]="{ 'active-view-type': (viewType$ | async) === viewType.standard }"
+        [ngClass]="{ 'active-view-type': (viewType$ | async) === viewTypeModel.standard }"
         svgIcon="format-list-bulleted-type"
-        (click)="updateViewType(viewType.standard)"
+        (click)="updateViewType(viewTypeModel.standard)"
       ></mat-icon>
       <mat-icon
-        [ngClass]="{ 'active-view-type': (viewType$ | async) === viewType.expansion }"
+        [ngClass]="{ 'active-view-type': (viewType$ | async) === viewTypeModel.expansion }"
         svgIcon="format-list-group"
-        (click)="updateViewType(viewType.expansion)"
+        (click)="updateViewType(viewTypeModel.expansion)"
       ></mat-icon>
     </div>
     <mat-form-field class="search-options-sort-form" appearance="fill">
@@ -40,10 +40,10 @@
   <!-- <app-tag-list [tags]="tags$ | async"></app-tag-list> -->
   <div class="search-result-container">
     <cdk-virtual-scroll-viewport itemSize="10" class="search-result-vscroll">
-      <ng-container *ngIf="(viewType$ | async) === viewType.standard">
+      <ng-container *ngIf="(viewType$ | async) === viewTypeModel.standard">
         <app-document-list [documents]="documents$ | async"></app-document-list>
       </ng-container>
-      <ng-container *ngIf="(viewType$ | async) === viewType.expansion">
+      <ng-container *ngIf="(viewType$ | async) === viewTypeModel.expansion">
         <app-expansion-document-list [documents$]="documents$"></app-expansion-document-list>
       </ng-container>
     </cdk-virtual-scroll-viewport>

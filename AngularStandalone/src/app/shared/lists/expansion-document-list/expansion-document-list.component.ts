@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Observable, of, Subject, takeUntil } from 'rxjs';
+import { distinctUntilChanged, Observable, of, Subject, takeUntil } from 'rxjs';
 
 import { DocumentRef } from 'src/app/store/models/document-ref.model';
 import { CategorizedSearchResult } from './categorized-search-result.model';
@@ -18,7 +18,7 @@ export class ExpansionDocumentListComponent implements OnInit, OnDestroy {
   constructor() {}
 
   ngOnInit(): void {
-    this.documents$.pipe(takeUntil(this.onDestroy)).subscribe((x) => {
+    this.documents$.pipe(distinctUntilChanged(), takeUntil(this.onDestroy)).subscribe((x) => {
       this.categorizedSearchResult = this.getCategorisedSearchResult(x);
     });
   }
