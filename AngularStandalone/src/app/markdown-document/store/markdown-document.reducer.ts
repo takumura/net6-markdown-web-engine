@@ -7,7 +7,8 @@ import { searchResultSortBy } from 'src/app/markdown-document/search/sort-by-opt
 import { DocumentRef } from 'src/app/store/models/document-ref.model';
 import { DocumentSearch } from 'src/app/store/models/document-search.model';
 import { initialMarkdownDocumentModel, MarkdownDocument } from 'src/app/store/models/markdown-document.model';
-import { loadDocuments, searchDocuments } from './markdown-document.action';
+import { loadDocuments, searchDocuments, updateViewType } from './markdown-document.action';
+import { searchResultViewType } from '../search/view-type-options';
 
 type Ilunr = (config: lunr.ConfigFunction) => lunr.Index;
 type JPlunr = Ilunr & {
@@ -51,7 +52,12 @@ export const lunrIndex = lunr((builder) => {
 
 const initialState: State = {
   documentIndex: documents,
-  documentSearch: { searchWord: '', tag: '', sortBy: searchResultSortBy.dateLatest },
+  documentSearch: {
+    searchWord: '',
+    tag: '',
+    sortBy: searchResultSortBy.dateLatest,
+    viewType: searchResultViewType.standard,
+  },
 };
 
 const markdownDocumentReducer = createReducer(
@@ -65,7 +71,21 @@ const markdownDocumentReducer = createReducer(
   ),
   on(searchDocuments, (state: State, payload) => ({
     ...state,
-    documentSearch: { searchWord: payload.search, tag: state.documentSearch.tag, sortBy: payload.sortBy ?? 0 },
+    documentSearch: {
+      searchWord: payload.search,
+      tag: state.documentSearch.tag,
+      sortBy: payload.sortBy ?? state.documentSearch.sortBy,
+      viewType: state.documentSearch.viewType,
+    },
+  })),
+  on(updateViewType, (state: State, payload) => ({
+    ...state,
+    documentSearch: {
+      searchWord: state.documentSearch.searchWord,
+      tag: state.documentSearch.tag,
+      sortBy: state.documentSearch.sortBy,
+      viewType: payload.viewType ?? state.documentSearch.viewType,
+    },
   }))
 );
 

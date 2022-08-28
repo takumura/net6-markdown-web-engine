@@ -8,7 +8,7 @@
 }
 
 .tag-container {
-  border-bottom: 2px ridge mat.get-color-from-palette($light-primary, lighter);
+  border-bottom: 2px ridge mat.get-color-from-palette($gray, lighter);
   padding: 8px 2px;
   margin-bottom: 32px;
 }

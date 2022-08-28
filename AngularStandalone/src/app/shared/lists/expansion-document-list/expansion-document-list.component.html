@@ -1,0 +1,17 @@
+<mat-accordion multi="true" *ngIf="documents$ | async" class="search-result">
+  <mat-expansion-panel *ngFor="let searchResults of categorizedSearchResult">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <h3>{{ searchResults.category }}</h3>
+      </mat-panel-title>
+      <mat-panel-description> {{ searchResults.count }} docs </mat-panel-description>
+    </mat-expansion-panel-header>
+    <ng-template matExpansionPanelContent>
+      <mat-nav-list>
+        <ng-container *ngFor="let item of searchResults.docs">
+          <app-document-list-item [item]="item" [showCategory]="false"></app-document-list-item>
+        </ng-container>
+      </mat-nav-list>
+    </ng-template>
+  </mat-expansion-panel>
+</mat-accordion>

@@ -4,8 +4,14 @@ import { Store } from '@ngrx/store';
 import { Observable, debounceTime, distinctUntilChanged, Subject, BehaviorSubject, takeUntil } from 'rxjs';
 
 import { searchResultSortBy, sortByOption } from './sort-by-options.interface';
-import { loadDocuments, searchDocuments } from '../store/markdown-document.action';
-import { selectSearchedDocuments, selectSearchWord, selectTags } from '../store/markdown-document.selectors';
+import { searchResultViewType } from './view-type-options';
+import { loadDocuments, searchDocuments, updateViewType } from '../store/markdown-document.action';
+import {
+  selectSearchedDocuments,
+  selectSearchWord,
+  selectTags,
+  selectViewType,
+} from '../store/markdown-document.selectors';
 import { DocumentRef } from '../../store/models/document-ref.model';
 
 @Component({
@@ -17,7 +23,6 @@ import { DocumentRef } from '../../store/models/document-ref.model';
 export class SearchComponent implements OnInit, OnDestroy {
   searchInputForm = new FormControl('');
   searchOptionForm = new FormControl(searchResultSortBy.dateLatest);
-
   private sortByOptions: sortByOption[] = [
     { key: searchResultSortBy.dateLatest, value: 'by date (latest)' },
     { key: searchResultSortBy.dateOldest, value: 'by date (oldest)' },
@@ -28,10 +33,12 @@ export class SearchComponent implements OnInit, OnDestroy {
     { key: searchResultSortBy.hitIndex, value: 'by hit index' },
   ];
   sortByOptionsSub = new BehaviorSubject<sortByOption[]>(this.sortByOptions);
-  sortByOptions$: Observable<sortByOption[]> = this.sortByOptionsSub.asObservable();
-  documents$: Observable<DocumentRef[]> = this.store.select(selectSearchedDocuments);
-  tags$: Observable<string[]> = this.store.select(selectTags);
+  viewType = searchResultViewType;
 
+  documents$: Observable<DocumentRef[]> = this.store.select(selectSearchedDocuments);
+  sortByOptions$: Observable<sortByOption[]> = this.sortByOptionsSub.asObservable();
+  tags$: Observable<string[]> = this.store.select(selectTags);
+  viewType$: Observable<number> = this.store.select(selectViewType);
   private onDestroy = new Subject<void>();
 
   constructor(private store: Store) {}
@@ -64,6 +71,10 @@ export class SearchComponent implements OnInit, OnDestroy {
   clearSearchInput() {
     this.searchInputForm.setValue('');
     this.searchOptionForm.setValue(searchResultSortBy.dateLatest);
+  }
+
+  updateViewType(viewType: number) {
+    this.store.dispatch(updateViewType({ viewType: viewType }));
   }
 
   private searchDocumentInternal() {

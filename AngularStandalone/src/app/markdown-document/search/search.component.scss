@@ -41,6 +41,10 @@
         cursor: pointer;
         background: rgba(0, 0, 0, 0.04);
       }
+
+      .active-view-type {
+        border: 1px solid mat.get-color-from-palette($gray);
+      }
     }
 
     .search-options-sort-form {

@@ -16,6 +16,7 @@ import { initialMarkdownDocumentModel } from 'src/app/store/models/markdown-docu
 import { selectUrl } from 'src/app/store/router/router.selector';
 import { searchResultSortBy } from 'src/app/markdown-document/search/sort-by-options.interface';
 import * as fromMarkdownDocument from './markdown-document.reducer';
+import { sortByDate, sortByTitle } from 'src/app/shared/utils/ordering';
 
 const selectMarkdownDocumentState = createFeatureSelector<fromMarkdownDocument.State>(fromMarkdownDocument.featureKey);
 
@@ -56,6 +57,8 @@ export const selectTags = createSelector(selectMarkdownDocumentState, (state) =>
 });
 
 export const selectDocuments = createSelector(selectMarkdownDocumentState, (state) => state?.documentIndex);
+
+export const selectViewType = createSelector(selectMarkdownDocumentState, (state) => state?.documentSearch.viewType);
 
 export const selectDocument = createSelector(selectDocuments, selectUrl, (documents, url) => {
   let defaultModel = {
@@ -99,56 +102,16 @@ function getOrderedDocumentIndex(state: fromMarkdownDocument.State, documentInde
 
   switch (state.documentSearch.sortBy) {
     case searchResultSortBy.dateLatest:
-      return index.sort((d1, d2) => {
-        if (d1.content.date < d2.content.date) {
-          return 1;
-        }
-
-        if (d1.content.date > d2.content.date) {
-          return -1;
-        }
-
-        return 0;
-      });
+      return index.sort(sortByDate(true));
       break;
     case searchResultSortBy.dateOldest:
-      return index.sort((d1, d2) => {
-        if (d1.content.date > d2.content.date) {
-          return 1;
-        }
-
-        if (d1.content.date < d2.content.date) {
-          return -1;
-        }
-
-        return 0;
-      });
+      return index.sort(sortByDate(false));
       break;
     case searchResultSortBy.aToZ:
-      return index.sort((d1, d2) => {
-        if (d1.content.title > d2.content.title) {
-          return 1;
-        }
-
-        if (d1.content.title < d2.content.title) {
-          return -1;
-        }
-
-        return 0;
-      });
+      return index.sort(sortByTitle(false));
       break;
     case searchResultSortBy.zToA:
-      return index.sort((d1, d2) => {
-        if (d1.content.title < d2.content.title) {
-          return 1;
-        }
-
-        if (d1.content.title > d2.content.title) {
-          return -1;
-        }
-
-        return 0;
-      });
+      return index.sort(sortByTitle(true));
       break;
     default:
       return documentIndex;
