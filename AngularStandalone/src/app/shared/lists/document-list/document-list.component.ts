@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+
 import { DocumentRef } from 'src/app/store/models/document-ref.model';
 
 @Component({

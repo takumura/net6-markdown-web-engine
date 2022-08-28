@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+
 import { DocumentRef } from 'src/app/store/models/document-ref.model';
 import { selectDocument } from '../store/markdown-document.selectors';
 

@@ -11,12 +11,12 @@ import rehypeStringify from 'rehype-stringify';
 import rehypeExternalLinks from 'rehype-external-links';
 import rehypeAttrs from 'rehype-attr';
 import rehypePrismPlus from 'rehype-prism-plus';
+import { searchResultSortBy } from 'src/app/markdown-document/search/sort-by-options.model';
+import { sortByDate, sortByTitle } from 'src/app/shared/utils/ordering';
 import { DocumentRef } from 'src/app/store/models/document-ref.model';
 import { initialMarkdownDocumentModel } from 'src/app/store/models/markdown-document.model';
 import { selectUrl } from 'src/app/store/router/router.selector';
-import { searchResultSortBy } from 'src/app/markdown-document/search/sort-by-options.interface';
 import * as fromMarkdownDocument from './markdown-document.reducer';
-import { sortByDate, sortByTitle } from 'src/app/shared/utils/ordering';
 
 const selectMarkdownDocumentState = createFeatureSelector<fromMarkdownDocument.State>(fromMarkdownDocument.featureKey);
 

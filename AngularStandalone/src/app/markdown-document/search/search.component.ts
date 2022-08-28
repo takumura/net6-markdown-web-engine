@@ -3,8 +3,8 @@ import { FormControl } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable, debounceTime, distinctUntilChanged, Subject, BehaviorSubject, takeUntil } from 'rxjs';
 
-import { searchResultSortBy, sortByOption } from './sort-by-options.interface';
-import { searchResultViewType } from './view-type-options';
+import { searchResultSortBy, sortByOption } from './sort-by-options.model';
+import { searchResultViewType } from './view-type-options.model';
 import { loadDocuments, searchDocuments, updateViewType } from '../store/markdown-document.action';
 import {
   selectSearchedDocuments,

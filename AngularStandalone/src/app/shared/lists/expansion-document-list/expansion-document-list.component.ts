@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { Observable, of, Subject, takeUntil } from 'rxjs';
 
 import { DocumentRef } from 'src/app/store/models/document-ref.model';
-import { CategorizedSearchResult } from './categorized-search-result.interface';
+import { CategorizedSearchResult } from './categorized-search-result.model';
 
 @Component({
   selector: 'app-expansion-document-list',
@@ -11,7 +11,7 @@ import { CategorizedSearchResult } from './categorized-search-result.interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ExpansionDocumentListComponent implements OnInit, OnDestroy {
-  @Input() documents$!: Observable<DocumentRef[]>;
+  @Input() documents$: Observable<DocumentRef[]> = of([]);
   categorizedSearchResult: CategorizedSearchResult[] = [];
 
   private onDestroy = new Subject<void>();

@@ -3,12 +3,12 @@ import { Action, createReducer, on } from '@ngrx/store';
 import lunr from 'lunr';
 import documentJson from 'src/assets/index.json';
 import ja from 'src/app/markdown-document/lunr.ja.js';
-import { searchResultSortBy } from 'src/app/markdown-document/search/sort-by-options.interface';
+import { searchResultSortBy } from 'src/app/markdown-document/search/sort-by-options.model';
+import { searchResultViewType } from 'src/app/markdown-document/search/view-type-options.model';
 import { DocumentRef } from 'src/app/store/models/document-ref.model';
 import { DocumentSearch } from 'src/app/store/models/document-search.model';
 import { initialMarkdownDocumentModel, MarkdownDocument } from 'src/app/store/models/markdown-document.model';
 import { loadDocuments, searchDocuments, updateViewType } from './markdown-document.action';
-import { searchResultViewType } from '../search/view-type-options';
 
 type Ilunr = (config: lunr.ConfigFunction) => lunr.Index;
 type JPlunr = Ilunr & {

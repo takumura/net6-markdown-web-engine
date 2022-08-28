@@ -1,11 +1,10 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Store } from '@ngrx/store';
-import { Subject, takeUntil } from 'rxjs';
-import { Observable } from 'rxjs/internal/Observable';
-import { selectDocument } from '../../../markdown-document/store/markdown-document.selectors';
+import { Observable, Subject, takeUntil } from 'rxjs';
 
-import { DocumentRef } from '../../../store/models/document-ref.model';
+import { selectDocument } from 'src/app/markdown-document/store/markdown-document.selectors';
+import { DocumentRef } from 'src/app/store/models/document-ref.model';
 
 @Component({
   selector: 'app-document',
