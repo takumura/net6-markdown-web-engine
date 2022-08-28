@@ -2,6 +2,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "allowJs": true,
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
@@ -20,7 +21,8 @@
     "module": "es2020",
     "lib": ["es2020", "dom"],
     "resolveJsonModule": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "types": ["lunr"]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

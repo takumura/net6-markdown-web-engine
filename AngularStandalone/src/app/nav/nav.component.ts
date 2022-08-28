@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { delay, filter, map, Observable, Subject, takeUntil } from 'rxjs';
-import { LoadingBarService } from '../shared/loading-bar/loading-bar.service';
 import { NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
+import { delay, filter, Observable, Subject, takeUntil } from 'rxjs';
+
 import { environment } from 'src/environments/environment';
+import { LoadingBarService } from '../shared/loading-bar/loading-bar.service';
+import { BreakpointObserverService } from '../shared/services/breakpoint-observer.service';
 
 @Component({
   selector: 'app-nav',
@@ -12,14 +13,12 @@ import { environment } from 'src/environments/environment';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavComponent implements OnInit, OnDestroy {
-  isSmall$: Observable<boolean> = this.breakpointObserver
-    .observe([Breakpoints.XSmall, Breakpoints.Small])
-    .pipe(map((result) => result.matches));
   env = environment;
+  isSmall$: Observable<boolean> = this.breakpointObserverService.getSmallBreakpoint();
   private onDestroy = new Subject<void>();
 
   constructor(
-    private breakpointObserver: BreakpointObserver,
+    private breakpointObserverService: BreakpointObserverService,
     private router: Router,
     private loadingBarService: LoadingBarService
   ) {}
