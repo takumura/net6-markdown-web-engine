@@ -1,0 +1,37 @@
+@use "@angular/material" as mat;
+@import "variables";
+
+.toc-title {
+  font-weight: 700;
+  width: 80%;
+  padding-left: 4px;
+  padding-bottom: 4px;
+  margin-bottom: 4px;
+}
+
+ul.toc-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0 8px 0;
+  border-left: 1px solid mat.get-color-from-palette($light-primary, "lighter");
+
+  li {
+    padding: 3px 0;
+
+    &.h3,
+    &.h4,
+    &.h5,
+    &.h6 {
+      padding-left: 1em;
+    }
+
+    a {
+      color: mat.get-color-from-palette($foreground, text);
+      text-decoration: none;
+    }
+
+    &:hover a {
+      color: mat.get-color-from-palette($light-accent, "darker");
+    }
+  }
+}

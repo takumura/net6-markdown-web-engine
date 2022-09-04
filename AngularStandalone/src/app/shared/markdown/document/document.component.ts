@@ -3,13 +3,14 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
+  Input,
   OnDestroy,
   OnInit,
   ViewChild,
 } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Store } from '@ngrx/store';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { Observable, of, Subject, takeUntil } from 'rxjs';
 
 import { selectDocument } from 'src/app/markdown-document/store/markdown-document.selectors';
 import { DocumentRef } from 'src/app/store/models/document-ref.model';
@@ -22,12 +23,12 @@ import postscribe from 'postscribe';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DocumentComponent implements OnInit, OnDestroy {
+  @Input() document$: Observable<DocumentRef> = of();
   @ViewChild('mdContent')
   mdContentRef: ElementRef | undefined;
 
   documentTitle: string = '';
   safeMdContent: SafeHtml | undefined;
-  private document$: Observable<DocumentRef> = this.store.select(selectDocument);
   private onDestroy = new Subject<void>();
 
   constructor(private store: Store, private sanitizer: DomSanitizer, private cdRef: ChangeDetectorRef) {}

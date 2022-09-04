@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { BreakpointObserverService } from 'src/app/shared/services/breakpoint-observer.service';
 
 import { DocumentRef } from 'src/app/store/models/document-ref.model';
 import { selectDocument } from '../store/markdown-document.selectors';
@@ -13,6 +14,7 @@ import { selectDocument } from '../store/markdown-document.selectors';
 })
 export class DisplayComponent {
   document$: Observable<DocumentRef> = this.store.select(selectDocument);
+  isMedium$: Observable<boolean> = this.breakpointObserverService.getMediumBreakpoint();
 
-  constructor(private store: Store) {}
+  constructor(private breakpointObserverService: BreakpointObserverService, private store: Store) {}
 }

@@ -5,3 +5,33 @@
   margin: 0 16px 24px 16px;
   font-size: 16px;
 }
+
+.doc-plus-toc-container {
+  display: grid;
+  grid-template-columns: 85% 15%;
+  column-gap: 16px;
+  grid-template-areas:
+    "header toc"
+    "content toc";
+}
+
+.doc-header {
+  grid-area: header;
+}
+
+.doc-content {
+  grid-area: content;
+}
+
+.doc-toc {
+  grid-area: toc;
+  position: fixed;
+  width: 13%;
+  top: 76px;
+  right: 0;
+  bottom: 12px;
+  margin-right: 4px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-color: mat.get-color-from-palette($gray, lighter);
+}
