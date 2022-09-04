@@ -15,6 +15,8 @@ import { MyTitleStrategyService } from './services/markdown-document-title-strat
 import { TagComponent } from './tags/tag/tag.component';
 import { TagListComponent } from './tags/tag-list/tag-list.component';
 import { DocumentTocComponent } from './markdown/document-toc/document-toc.component';
+import { ScrollSpyService } from './services/scroll-spy.service';
+import { TocService } from './services/toc.service';
 
 const components = [
   DocumentComponent,
@@ -36,6 +38,8 @@ const components = [
     BreakpointObserverService,
     LoadingBarService,
     { provide: TitleStrategy, useClass: MyTitleStrategyService },
+    ScrollSpyService,
+    TocService,
   ],
 })
 export class SharedModule {}

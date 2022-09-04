@@ -30,6 +30,10 @@ ul.toc-list {
       text-decoration: none;
     }
 
+    &.active a {
+      color: mat.get-color-from-palette($light-accent, "lighter");
+    }
+
     &:hover a {
       color: mat.get-color-from-palette($light-accent, "darker");
     }

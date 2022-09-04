@@ -8,13 +8,13 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
+import { Location } from '@angular/common';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { Store } from '@ngrx/store';
 import { Observable, of, Subject, takeUntil } from 'rxjs';
-
-import { selectDocument } from 'src/app/markdown-document/store/markdown-document.selectors';
-import { DocumentRef } from 'src/app/store/models/document-ref.model';
 import postscribe from 'postscribe';
+
+import { DocumentRef } from 'src/app/store/models/document-ref.model';
+import { TocService } from '../../services/toc.service';
 
 @Component({
   selector: 'app-document',
@@ -31,7 +31,12 @@ export class DocumentComponent implements OnInit, OnDestroy {
   safeMdContent: SafeHtml | undefined;
   private onDestroy = new Subject<void>();
 
-  constructor(private store: Store, private sanitizer: DomSanitizer, private cdRef: ChangeDetectorRef) {}
+  constructor(
+    private sanitizer: DomSanitizer,
+    private cdRef: ChangeDetectorRef,
+    private location: Location,
+    private tocService: TocService
+  ) {}
 
   ngOnInit() {
     this.document$.pipe(takeUntil(this.onDestroy)).subscribe((x) => {
@@ -40,6 +45,11 @@ export class DocumentComponent implements OnInit, OnDestroy {
 
       // detect change to update virtual DOM and allow to access mdContentRef
       this.cdRef.detectChanges();
+
+      this.tocService.reset();
+      if (this.mdContentRef) {
+        this.tocService.genToc(this.mdContentRef.nativeElement, this.location.path());
+      }
 
       this.showGist();
     });

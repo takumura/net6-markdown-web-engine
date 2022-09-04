@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { Location } from '@angular/common';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { initialMarkdownDocumentModel, MarkdownDocument } from 'src/app/store/models/markdown-document.model';
-import { TocItem } from './toc-item.model';
+import { ReplaySubject, Subject, takeUntil } from 'rxjs';
+
+import { TocService, TocItem } from '../../services/toc.service';
 
 @Component({
   selector: 'app-document-toc',
@@ -9,43 +10,25 @@ import { TocItem } from './toc-item.model';
   styleUrls: ['./document-toc.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DocumentTocComponent implements OnInit {
+export class DocumentTocComponent implements OnInit, OnDestroy {
   @Input() document: MarkdownDocument | undefined = initialMarkdownDocumentModel;
   tocList: TocItem[] = [];
+  activeItemIndex = new ReplaySubject<number | null>(1);
 
-  constructor(private location: Location) {}
+  private onDestroy = new Subject<void>();
+
+  constructor(private tocService: TocService) {}
 
   ngOnInit(): void {
-    this.generateToc();
+    this.tocService.tocList.pipe(takeUntil(this.onDestroy)).subscribe((tocList) => {
+      this.tocList = tocList;
+    });
+
+    this.activeItemIndex = this.tocService.activeItemIndex;
   }
 
-  private generateToc() {
-    if (this.document && this.document.toc !== 'none') {
-      const href = this.location.path();
-      const headings = this.findTocHeadings(this.document.toc);
-      if (headings) {
-        this.tocList = headings.map((heading) => ({
-          href: href,
-          fragment: heading.id,
-          level: heading.tagName.toLowerCase(),
-          title: (heading.textContent || '').trim(),
-        }));
-      }
-    }
-  }
-
-  private findTocHeadings(toc: string): HTMLHeadingElement[] | null {
-    const tocHeader = toc ?? 'h2,h3';
-
-    if (this.document) {
-      const tmpDiv = document.createElement('div');
-      tmpDiv.innerHTML = this.document.bodyHtml;
-
-      const headings = tmpDiv.querySelectorAll(tocHeader);
-      const skipNoTocHeadings = (heading: HTMLHeadingElement) => !/(?:no-toc|notoc)/i.test(heading.className);
-      return Array.prototype.filter.call(headings, skipNoTocHeadings);
-    } else {
-      return null;
-    }
+  ngOnDestroy(): void {
+    this.onDestroy.next();
+    this.onDestroy.complete();
   }
 }

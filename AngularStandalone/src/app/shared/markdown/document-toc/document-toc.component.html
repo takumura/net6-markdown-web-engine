@@ -2,7 +2,13 @@
   <div class="toc-title mat-caption">Table of Content</div>
   <ul class="toc-list" *ngIf="tocList">
     <ng-container *ngFor="let toc of tocList; let i = index">
-      <li #tocItem title="{{ toc.title }}" *ngIf="toc.level !== 'h1'" class="{{ toc.level }} mat-caption">
+      <li
+        #tocItem
+        title="{{ toc.title }}"
+        *ngIf="toc.level !== 'h1'"
+        class="{{ toc.level }} mat-caption"
+        [class.active]="i === (this.activeItemIndex | async)"
+      >
         <a [routerLink]="toc.href" [fragment]="toc.fragment" class="internal-anchor">
           {{ toc.title }}
         </a>
