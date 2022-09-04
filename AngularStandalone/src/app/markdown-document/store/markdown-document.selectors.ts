@@ -65,11 +65,16 @@ export const selectDocument = createSelector(selectDocuments, selectUrl, (docume
     content: initialMarkdownDocumentModel,
   };
 
-  if (!url.startsWith('/doc')) {
+  // The fragment will be included on url e.g. click ToC link
+  // It is not required on this selecotr process, so drop off fragment value
+  // The fragment information will be used on display component via "selectFragment" route selector
+  const urlPath: string = url.replace(/#.*/, '');
+
+  if (!urlPath.startsWith('/doc')) {
     return defaultModel;
   }
 
-  let document = documents?.find((x) => x.docRef === url.substring(5, url.length)) ?? defaultModel;
+  let document = documents?.find((x) => x.docRef === urlPath.substring(5, urlPath.length)) ?? defaultModel;
 
   // TODO: only import required language for highlight if those make vendor.js file so big
   const processor = unified()
