@@ -1,4 +1,17 @@
 <div class="doc-container">
-  <app-document-header [document]="(document$ | async)?.content"></app-document-header>
-  <app-document></app-document>
+  <ng-container *ngIf="(document$ | async)?.content?.toc !== 'none'">
+    <div [ngClass]="(isMedium$ | async) ? '' : 'doc-plus-toc-container'">
+      <app-document-header class="doc-header" [document]="(document$ | async)?.content"></app-document-header>
+      <app-document class="doc-content" [document$]="document$"></app-document>
+      <app-document-toc
+        *ngIf="!(isMedium$ | async)"
+        class="doc-toc"
+        [document]="(document$ | async)?.content"
+      ></app-document-toc>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="(document$ | async)?.content?.toc === 'none'">
+    <app-document-header [document]="(document$ | async)?.content"></app-document-header>
+    <app-document [document$]="document$"></app-document>
+  </ng-container>
 </div>

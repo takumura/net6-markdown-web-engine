@@ -13,4 +13,10 @@ export class BreakpointObserverService {
       .observe([Breakpoints.XSmall, Breakpoints.Small])
       .pipe(map((result) => result.matches));
   }
+
+  getMediumBreakpoint() {
+    return this.breakpointObserver
+      .observe([Breakpoints.XSmall, Breakpoints.Small, Breakpoints.Medium])
+      .pipe(map((result) => result.matches));
+  }
 }

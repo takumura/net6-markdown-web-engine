@@ -29,6 +29,7 @@
     "@ngrx/store-devtools": "^14.1.0",
     "jest-editor-support": "*",
     "lunr": "^2.3.9",
+    "postscribe": "^2.0.8",
     "rehype-attr": "^2.0.8",
     "rehype-autolink-headings": "^6.1.1",
     "rehype-external-links": "^1.0.1",
