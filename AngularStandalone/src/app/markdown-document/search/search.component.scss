@@ -1,6 +1,44 @@
 @use "@angular/material" as mat;
 @import "variables";
 
+::ng-deep .mat-form-field-suffix {
+  top: 0px !important;
+}
+
+.search-advanced-overlay {
+  width: 80vw;
+  height: 30vh;
+  border: solid 1px #ccc;
+  border-radius: 5px;
+  background: #fff;
+  text-align: center;
+  padding: 10px;
+  margin: 0;
+  overflow: auto;
+
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
+  justify-items: center;
+  align-items: center;
+
+  .autocomplete-input {
+    width: 80%;
+    line-height: 1.4em;
+  }
+
+  .autocomplete-label {
+    vertical-align: text-top;
+  }
+
+  .search-advanced-overlay-actions {
+    display: grid;
+    grid-template-columns: 120px 120px;
+    column-gap: 10px;
+    justify-content: center;
+  }
+}
+
 .search-grid {
   display: grid;
   height: Calc(100vh - 105px);
@@ -15,6 +53,11 @@
 
     .search-input-form {
       width: 80%;
+      line-height: 1em;
+
+      .has-advanced-options {
+        color: mat.get-color-from-palette($light-accent, "darker");
+      }
     }
   }
 
