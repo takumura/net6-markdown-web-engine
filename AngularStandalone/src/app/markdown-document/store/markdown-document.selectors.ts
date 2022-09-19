@@ -20,45 +20,15 @@ import * as fromMarkdownDocument from './markdown-document.reducer';
 
 const selectMarkdownDocumentState = createFeatureSelector<fromMarkdownDocument.State>(fromMarkdownDocument.featureKey);
 
-export const selectSearchWord = createSelector(
-  selectMarkdownDocumentState,
-  (state) => state?.documentSearch?.searchWord
-);
-
-export const selectSearchTag = createSelector(selectMarkdownDocumentState, (state) => state?.documentSearch?.tag);
-
-export const selectSearchedDocuments = createSelector(selectMarkdownDocumentState, (state) => {
-  if (!state.documentSearch.searchWord && !state.documentSearch.tag) {
-    return getOrderedDocumentIndex(state, state?.documentIndex);
-  }
-
-  const index: Index.Result[] = fromMarkdownDocument.lunrIndex.search(state.documentSearch.searchWord);
-  if (index) {
-    const refs = index.map((x) => x.ref);
-    const filteredDocuments = refs.flatMap((x) => state?.documentIndex.filter((doc) => doc.docRef === x));
-    return getOrderedDocumentIndex(state, filteredDocuments);
-  } else {
-    return getOrderedDocumentIndex(state, state?.documentIndex);
-  }
-});
-
-export const selectTags = createSelector(selectMarkdownDocumentState, (state) => {
-  const docTags = state?.documentIndex.map((x) => {
-    const content = x.content;
-    return content.tag;
-  });
-  const tags = docTags.reduce((acc, curr) => acc.concat(curr), []);
-
-  const result = new Set<string>(tags);
+export const selectCategories = createSelector(selectMarkdownDocumentState, (state) => {
+  const docCategoires = state?.documentIndex.map((x) => x.content.category);
+  const result = new Set<string>(docCategoires);
   return Array.from(result)
     .filter((x) => x !== undefined && x !== null)
     .sort();
 });
 
 export const selectDocuments = createSelector(selectMarkdownDocumentState, (state) => state?.documentIndex);
-
-export const selectViewType = createSelector(selectMarkdownDocumentState, (state) => state?.documentSearch.viewType);
-
 export const selectDocument = createSelector(selectDocuments, selectUrl, (documents, url) => {
   let defaultModel = {
     docRef: '',
@@ -100,6 +70,72 @@ export const selectDocument = createSelector(selectDocuments, selectUrl, (docume
 export const selectDocumentTitle = createSelector(selectDocument, (document) => {
   return document?.content?.title;
 });
+
+export const selectFilteredDocuments = createSelector(selectMarkdownDocumentState, (state) => {
+  if (!state.documentSearch.searchWord && !state.documentSearch.tags) {
+    return getOrderedDocumentIndex(state, state?.documentIndex);
+  }
+
+  let filteredDocuments: DocumentRef[] = [];
+
+  // filter by search keywork
+  const index: Index.Result[] = fromMarkdownDocument.lunrIndex.search(state.documentSearch.searchWord);
+  if (index) {
+    const refs = index.map((x) => x.ref);
+    filteredDocuments = refs.flatMap((x) => state?.documentIndex.filter((doc) => doc.docRef === x));
+  } else {
+    filteredDocuments = state?.documentIndex;
+  }
+
+  // filter by category
+  if (state.documentSearch.category) {
+    filteredDocuments = filteredDocuments.filter((x) => x.content?.category === state.documentSearch.category);
+  }
+
+  //filter by tags
+  if (state.documentSearch.tags && state.documentSearch.tags.length > 0) {
+    filteredDocuments = filteredDocuments.filter((x) => {
+      if (!x.content.tag || x.content.tag?.length === 0) {
+        return false;
+      } else {
+        return state.documentSearch.tags.every((t) => x.content.tag.includes(t));
+      }
+    });
+  }
+
+  return getOrderedDocumentIndex(state, filteredDocuments);
+});
+
+export const selectHasAdvancedOptions = createSelector(selectMarkdownDocumentState, (document) => {
+  return !!document?.documentSearch?.category || document?.documentSearch?.tags?.length > 0;
+});
+
+export const selectSearchCategory = createSelector(
+  selectMarkdownDocumentState,
+  (state) => state?.documentSearch?.category
+);
+
+export const selectSearchTags = createSelector(selectMarkdownDocumentState, (state) => state?.documentSearch?.tags);
+
+export const selectSearchWord = createSelector(
+  selectMarkdownDocumentState,
+  (state) => state?.documentSearch?.searchWord
+);
+
+export const selectTags = createSelector(selectMarkdownDocumentState, (state) => {
+  const docTags = state?.documentIndex.map((x) => {
+    const content = x.content;
+    return content.tag;
+  });
+  const tags = docTags.reduce((acc, curr) => acc.concat(curr), []);
+
+  const result = new Set<string>(tags);
+  return Array.from(result)
+    .filter((x) => x !== undefined && x !== null)
+    .sort();
+});
+
+export const selectViewType = createSelector(selectMarkdownDocumentState, (state) => state?.documentSearch.viewType);
 
 function getOrderedDocumentIndex(state: fromMarkdownDocument.State, documentIndex: DocumentRef[]) {
   let index = [...documentIndex];

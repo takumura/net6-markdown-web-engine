@@ -1,6 +1,7 @@
 export interface DocumentSearch {
   searchWord: string;
-  tag: string;
+  category: string;
+  tags: string[];
   sortBy: number;
   viewType: number;
 }

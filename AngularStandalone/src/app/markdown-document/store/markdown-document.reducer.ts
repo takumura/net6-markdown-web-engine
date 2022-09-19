@@ -8,7 +8,12 @@ import { searchResultViewType } from 'src/app/markdown-document/search/view-type
 import { DocumentRef } from 'src/app/store/models/document-ref.model';
 import { DocumentSearch } from 'src/app/store/models/document-search.model';
 import { initialMarkdownDocumentModel, MarkdownDocument } from 'src/app/store/models/markdown-document.model';
-import { loadDocuments, searchDocuments, updateViewType } from './markdown-document.action';
+import {
+  loadDocuments,
+  searchDocuments,
+  searchDocumentsByAdvancedOptions,
+  updateViewType,
+} from './markdown-document.action';
 
 type Ilunr = (config: lunr.ConfigFunction) => lunr.Index;
 type JPlunr = Ilunr & {
@@ -54,7 +59,8 @@ const initialState: State = {
   documentIndex: documents,
   documentSearch: {
     searchWord: '',
-    tag: '',
+    category: '',
+    tags: [],
     sortBy: searchResultSortBy.dateLatest,
     viewType: searchResultViewType.standard,
   },
@@ -73,8 +79,19 @@ const markdownDocumentReducer = createReducer(
     ...state,
     documentSearch: {
       searchWord: payload.search,
-      tag: state.documentSearch.tag,
+      category: state.documentSearch.category,
+      tags: state.documentSearch.tags,
       sortBy: payload.sortBy ?? state.documentSearch.sortBy,
+      viewType: state.documentSearch.viewType,
+    },
+  })),
+  on(searchDocumentsByAdvancedOptions, (state: State, payload) => ({
+    ...state,
+    documentSearch: {
+      searchWord: state.documentSearch.searchWord,
+      category: payload.category ?? state.documentSearch.category,
+      tags: payload.tags ?? state.documentSearch.tags,
+      sortBy: state.documentSearch.sortBy,
       viewType: state.documentSearch.viewType,
     },
   })),
@@ -82,7 +99,8 @@ const markdownDocumentReducer = createReducer(
     ...state,
     documentSearch: {
       searchWord: state.documentSearch.searchWord,
-      tag: state.documentSearch.tag,
+      category: state.documentSearch.category,
+      tags: state.documentSearch.tags,
       sortBy: state.documentSearch.sortBy,
       viewType: payload.viewType ?? state.documentSearch.viewType,
     },
