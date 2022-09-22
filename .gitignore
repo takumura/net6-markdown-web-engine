@@ -233,6 +233,4 @@ _Pvt_Extensions
 .fake/
 
 # Temporary ignored the md and json documents
-/AspNetCoreWebApi/Docs
-/AngularStandalone/src/assets/index.json
-AngularStandalone/src/assets/images
+AngularStandalone/docs/json

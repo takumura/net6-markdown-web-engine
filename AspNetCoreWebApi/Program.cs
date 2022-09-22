@@ -17,8 +17,8 @@ var contetRootPath = builder.Environment.ContentRootPath;
 var isDevelopment = builder.Environment.IsDevelopment();
 builder.Services.Configure<DocumentsWatchServiceOptions>(options =>
 {
-    options.InputDir = Path.Combine(contetRootPath, "Docs/md");
-    options.OutputDir = Path.Combine(contetRootPath, "Docs/json");
+    options.InputDir = Path.Combine(contetRootPath, "../AngularStandalone/docs/md");
+    options.OutputDir = Path.Combine(contetRootPath, "../AngularStandalone/docs/json");
     if (isDevelopment)
     {
         options.IndexDir = Path.Combine(contetRootPath, "../AngularStandalone/src/assets");
