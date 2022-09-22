@@ -15,4 +15,8 @@
     <ProjectReference Include="..\Net6Markdown2JsonConverter\Net6Markdown2JsonConverter.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+
 </Project>
