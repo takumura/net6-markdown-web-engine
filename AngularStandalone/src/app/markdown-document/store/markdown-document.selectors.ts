@@ -19,6 +19,10 @@ import { selectUrl } from 'src/app/store/router/router.selector';
 import * as fromMarkdownDocument from './markdown-document.reducer';
 
 const selectMarkdownDocumentState = createFeatureSelector<fromMarkdownDocument.State>(fromMarkdownDocument.featureKey);
+const defaultDocRefModel: DocumentRef = {
+  docRef: '',
+  content: initialMarkdownDocumentModel,
+};
 
 export const selectCategories = createSelector(selectMarkdownDocumentState, (state) => {
   const docCategoires = state?.documentIndex.map((x) => x.content.category);
@@ -30,42 +34,23 @@ export const selectCategories = createSelector(selectMarkdownDocumentState, (sta
 
 export const selectDocuments = createSelector(selectMarkdownDocumentState, (state) => state?.documentIndex);
 export const selectDocument = createSelector(selectDocuments, selectUrl, (documents, url) => {
-  let defaultModel = {
-    docRef: '',
-    content: initialMarkdownDocumentModel,
-  };
-
   // The fragment will be included on url e.g. click ToC link
   // It is not required on this selecotr process, so drop off fragment value
   // The fragment information will be used on display component via "selectFragment" route selector
   const urlPath: string = url.replace(/#.*/, '');
 
   if (!urlPath.startsWith('/doc')) {
-    return defaultModel;
+    return defaultDocRefModel;
   }
 
-  let document = documents?.find((x) => x.docRef === urlPath.substring(5, urlPath.length)) ?? defaultModel;
-
-  // TODO: only import required language for highlight if those make vendor.js file so big
-  const processor = unified()
-    .use(remarkParse)
-    .use(remarkRehype, { allowDangerousHtml: true })
-    .use(rehypeRaw)
-    .use(rehypeSlug)
-    .use(rehypeAutolinkHeadings)
-    .use(rehypeExternalLinks, { target: '_blank', rel: ['noopener'] })
-    .use(rehypeAttrs, { properties: 'attr' })
-    .use(rehypePrismPlus, { showLineNumbers: true })
-    .use(rehypeStringify);
-  const html = String(processor.processSync(document.content.body));
-
-  const result = {
-    docRef: document.docRef,
-    content: { ...document.content, bodyHtml: html },
-  };
-
-  return result;
+  const document = documents?.find((x) => x.docRef === urlPath.substring(5, urlPath.length)) ?? defaultDocRefModel;
+  return convertJsonToHtml(document);
 });
+export const selectDocumentByDocRef = (docRef: string) =>
+  createSelector(selectDocuments, selectUrl, (documents, url) => {
+    let document = documents?.find((x) => x.docRef === docRef) ?? defaultDocRefModel;
+    return convertJsonToHtml(document);
+  });
 
 export const selectDocumentTitle = createSelector(selectDocument, (document) => {
   return document?.content?.title;
@@ -136,6 +121,28 @@ export const selectTags = createSelector(selectMarkdownDocumentState, (state) =>
 });
 
 export const selectViewType = createSelector(selectMarkdownDocumentState, (state) => state?.documentSearch.viewType);
+
+function convertJsonToHtml(document: DocumentRef) {
+  // TODO: only import required language for highlight if those make vendor.js file so big
+  const processor = unified()
+    .use(remarkParse)
+    .use(remarkRehype, { allowDangerousHtml: true })
+    .use(rehypeRaw)
+    .use(rehypeSlug)
+    .use(rehypeAutolinkHeadings)
+    .use(rehypeExternalLinks, { target: '_blank', rel: ['noopener'] })
+    .use(rehypeAttrs, { properties: 'attr' })
+    .use(rehypePrismPlus, { showLineNumbers: true })
+    .use(rehypeStringify);
+  const html = String(processor.processSync(document.content.body));
+
+  const result = {
+    docRef: document.docRef,
+    content: { ...document.content, bodyHtml: html },
+  };
+
+  return result;
+}
 
 function getOrderedDocumentIndex(state: fromMarkdownDocument.State, documentIndex: DocumentRef[]) {
   let index = [...documentIndex];
