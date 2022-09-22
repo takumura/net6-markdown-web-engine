@@ -8,7 +8,8 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "prestart": "node aspnetcore-https",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "deploy": "ng deploy"
   },
   "private": true,
   "dependencies": {
@@ -27,6 +28,7 @@
     "@ngrx/router-store": "^14.1.0",
     "@ngrx/store": "^14.1.0",
     "@ngrx/store-devtools": "^14.1.0",
+    "angular-cli-ghpages": "^1.0.3",
     "jest-editor-support": "*",
     "lunr": "^2.3.9",
     "postscribe": "^2.0.8",
