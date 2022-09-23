@@ -6,6 +6,17 @@
     <StartupCommand>yarn start</StartupCommand>
     <JavaScriptTestFramework>Jasmine</JavaScriptTestFramework>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebuggerFlavor>LaunchJsonDebugger</DebuggerFlavor>
+    <LaunchJsonTarget>
+      {
+      "type": "pwa-msedge",
+      "request": "launch",
+      "name": "localhost (Edge)",
+      "url": "https://localhost:4200",
+      }
+    </LaunchJsonTarget>
+  </PropertyGroup>
   <ItemGroup>
     <Script Include="**" Exclude="*.esproj;**\node_modules\**" />
   </ItemGroup>
