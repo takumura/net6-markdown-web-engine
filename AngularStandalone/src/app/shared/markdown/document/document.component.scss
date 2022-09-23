@@ -11,6 +11,12 @@
   color: mat.get-color-from-palette($light-primary);
 }
 
+::ng-deep details {
+  margin-top: 32px;
+  padding: 4px;
+  border: solid 1px mat.get-color-from-palette($light-primary, 500);
+}
+
 ::ng-deep table {
   margin-left: 1em;
   margin-bottom: 32px;
