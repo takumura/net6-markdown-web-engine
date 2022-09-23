@@ -231,6 +231,3 @@ _Pvt_Extensions
 
 # FAKE - F# Make
 .fake/
-
-# Temporary ignored the md and json documents
-AngularStandalone/docs/json
