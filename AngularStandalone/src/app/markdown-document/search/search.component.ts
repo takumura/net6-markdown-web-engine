@@ -160,11 +160,19 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   clearAdvancedSearchOptions() {
     this.store.dispatch(searchDocumentsByAdvancedOptions({ tags: [], category: '' }));
+    this.category = '';
     this.searchForm.patchValue({ searchTagForm: '' });
     this.tags.splice(0);
 
     this.searchDocumentInternal();
     this.toggleAdvancedSearchOpen();
+  }
+
+  clearSearchCategory(): void {
+    this.category = '';
+    this.searchForm.patchValue({
+      searchCategoryForm: '',
+    });
   }
 
   clearSearchInput(): void {
