@@ -65,7 +65,7 @@
     display: grid;
     border-top: 2px ridge mat.get-color-from-palette($gray, lighter);
     padding: 8px 2px 0 2px;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     align-items: baseline;
     justify-content: space-around;
 

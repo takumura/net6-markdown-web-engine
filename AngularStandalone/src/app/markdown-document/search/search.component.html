@@ -38,6 +38,9 @@
         (click)="updateViewType(viewTypeModel.expansion)"
       ></mat-icon>
     </div>
+    <div *ngIf="documents$ | async as documents">
+      {{ documents?.length && documents.length > 0 ? documents.length : "No" }} doc(s) found
+    </div>
     <mat-form-field
       class="search-options-sort-form"
       appearance="fill"
