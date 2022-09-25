@@ -17,6 +17,7 @@ import { DocumentRef } from 'src/app/store/models/document-ref.model';
 import { initialMarkdownDocumentModel } from 'src/app/store/models/markdown-document.model';
 import { selectUrl } from 'src/app/store/router/router.selector';
 import * as fromMarkdownDocument from './markdown-document.reducer';
+import { environment } from 'src/environments/environment';
 
 const selectMarkdownDocumentState = createFeatureSelector<fromMarkdownDocument.State>(fromMarkdownDocument.featureKey);
 const defaultDocRefModel: DocumentRef = {
@@ -29,10 +30,12 @@ export const selectCategories = createSelector(selectMarkdownDocumentState, (sta
   const result = new Set<string>(docCategoires);
   return Array.from(result)
     .filter((x) => x !== undefined && x !== null)
+    .filter((x) => !environment.ignoreListForCategory.some((c) => c === x.toLowerCase()))
     .sort();
 });
 
 export const selectDocuments = createSelector(selectMarkdownDocumentState, (state) => state?.documentIndex);
+
 export const selectDocument = createSelector(selectDocuments, selectUrl, (documents, url) => {
   // The fragment will be included on url e.g. click ToC link
   // It is not required on this selecotr process, so drop off fragment value
@@ -46,6 +49,7 @@ export const selectDocument = createSelector(selectDocuments, selectUrl, (docume
   const document = documents?.find((x) => x.docRef === urlPath.substring(5, urlPath.length)) ?? defaultDocRefModel;
   return convertJsonToHtml(document);
 });
+
 export const selectDocumentByDocRef = (docRef: string) =>
   createSelector(selectDocuments, selectUrl, (documents, url) => {
     let document = documents?.find((x) => x.docRef === docRef) ?? defaultDocRefModel;
@@ -57,17 +61,19 @@ export const selectDocumentTitle = createSelector(selectDocument, (document) => 
 });
 
 export const selectFilteredDocuments = createSelector(selectMarkdownDocumentState, (state) => {
-  if (!state.documentSearch.searchWord && !state.documentSearch.tags) {
-    return getOrderedDocumentIndex(state, state?.documentIndex);
-  }
+  let filteredDocuments: DocumentRef[] = state?.documentIndex.filter(
+    (x) => !environment.ignoreListForCategory.some((c) => c === x?.content?.category.toLowerCase())
+  );
 
-  let filteredDocuments: DocumentRef[] = [];
+  if (!state.documentSearch.searchWord && !state.documentSearch.tags) {
+    return getOrderedDocumentIndex(state, filteredDocuments);
+  }
 
   // filter by search keywork
   const index: Index.Result[] = fromMarkdownDocument.lunrIndex.search(state.documentSearch.searchWord);
   if (index) {
     const refs = index.map((x) => x.ref);
-    filteredDocuments = refs.flatMap((x) => state?.documentIndex.filter((doc) => doc.docRef === x));
+    filteredDocuments = refs.flatMap((x) => filteredDocuments.filter((doc) => doc.docRef === x));
   } else {
     filteredDocuments = state?.documentIndex;
   }

@@ -6,6 +6,7 @@ export const environment = {
   production: false,
   appTitle: 'Net6 Markdown Web Engine',
   appVersion: '0.1.0',
+  ignoreListForCategory: ['none'],
 };
 
 /*
