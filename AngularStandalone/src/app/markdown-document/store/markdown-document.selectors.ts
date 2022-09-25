@@ -31,7 +31,7 @@ export const selectCategories = createSelector(selectMarkdownDocumentState, (sta
   return Array.from(result)
     .filter((x) => x !== undefined && x !== null)
     .filter((x) => !environment.ignoreListForCategory.some((c) => c === x.toLowerCase()))
-    .sort();
+    .sort(lowerCaseComparer);
 });
 
 export const selectDocuments = createSelector(selectMarkdownDocumentState, (state) => state?.documentIndex);
@@ -123,7 +123,7 @@ export const selectTags = createSelector(selectMarkdownDocumentState, (state) =>
   const result = new Set<string>(tags);
   return Array.from(result)
     .filter((x) => x !== undefined && x !== null)
-    .sort();
+    .sort(lowerCaseComparer);
 });
 
 export const selectViewType = createSelector(selectMarkdownDocumentState, (state) => state?.documentSearch.viewType);
@@ -170,4 +170,8 @@ function getOrderedDocumentIndex(state: fromMarkdownDocument.State, documentInde
       return documentIndex;
       break;
   }
+}
+
+function lowerCaseComparer(a: string, b: string) {
+  return a.toLowerCase().localeCompare(b.toLowerCase());
 }
