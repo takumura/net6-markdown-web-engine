@@ -2,6 +2,16 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { Index } from 'lunr';
 import { unified } from 'unified';
+import { refractor } from 'refractor/lib/core.js';
+import csharp from 'refractor/lang/csharp.js';
+import css from 'refractor/lang/css.js';
+import diff from 'refractor/lang/diff.js';
+import markup from 'refractor/lang/markup.js';
+import javascript from 'refractor/lang/javascript.js';
+import json from 'refractor/lang/json.js';
+import powershell from 'refractor/lang/powershell.js';
+import typescript from 'refractor/lang/typescript.js';
+import yaml from 'refractor/lang/yaml.js';
 import remarkParse from 'remark-parse';
 import remarkRehype from 'remark-rehype';
 import rehypeRaw from 'rehype-raw';
@@ -10,7 +20,7 @@ import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeStringify from 'rehype-stringify';
 import rehypeExternalLinks from 'rehype-external-links';
 import rehypeAttrs from 'rehype-attr';
-import rehypePrismPlus from 'rehype-prism-plus';
+import rehypePrismGenerator from 'rehype-prism-plus/generator';
 import { searchResultSortBy } from 'src/app/markdown-document/search/sort-by-options.model';
 import { sortByDate, sortByTitle } from 'src/app/shared/utils/ordering';
 import { DocumentRef } from 'src/app/store/models/document-ref.model';
@@ -129,7 +139,17 @@ export const selectTags = createSelector(selectMarkdownDocumentState, (state) =>
 export const selectViewType = createSelector(selectMarkdownDocumentState, (state) => state?.documentSearch.viewType);
 
 function convertJsonToHtml(document: DocumentRef) {
-  // TODO: only import required language for highlight if those make vendor.js file so big
+  refractor.register(csharp);
+  refractor.register(css);
+  refractor.register(diff);
+  refractor.register(markup);
+  refractor.register(javascript);
+  refractor.register(json);
+  refractor.register(powershell);
+  refractor.register(typescript);
+  refractor.register(yaml);
+  const myPrismPlugin = rehypePrismGenerator(refractor);
+
   const processor = unified()
     .use(remarkParse)
     .use(remarkRehype, { allowDangerousHtml: true })
@@ -138,7 +158,7 @@ function convertJsonToHtml(document: DocumentRef) {
     .use(rehypeAutolinkHeadings)
     .use(rehypeExternalLinks, { target: '_blank', rel: ['noopener'] })
     .use(rehypeAttrs, { properties: 'attr' })
-    .use(rehypePrismPlus, { showLineNumbers: true })
+    .use(myPrismPlugin, { showLineNumbers: true })
     .use(rehypeStringify);
   const html = String(processor.processSync(document.content.body));
 
