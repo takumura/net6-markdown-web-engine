@@ -23,6 +23,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+img {
+  max-width: 100%;
+}
+
 .secondary-text {
   color: mat.get-color-from-palette($foreground, secondary-text);
 }
