@@ -1,6 +1,5 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
-import { Index } from 'lunr';
 import { unified } from 'unified';
 import { refractor } from 'refractor/lib/core.js';
 import csharp from 'refractor/lang/csharp.js';
@@ -80,13 +79,12 @@ export const selectFilteredDocuments = createSelector(selectMarkdownDocumentStat
   }
 
   // filter by search keywork
-  const index: Index.Result[] = fromMarkdownDocument.lunrIndex.search(state.documentSearch.searchWord);
-  if (index) {
-    const refs = index.map((x) => x.ref);
-    filteredDocuments = refs.flatMap((x) => filteredDocuments.filter((doc) => doc.docRef === x));
-  } else {
-    filteredDocuments = state?.documentIndex;
-  }
+  filteredDocuments = filteredDocuments.filter(
+    (x) =>
+      x.content?.title.indexOf(state.documentSearch.searchWord) !== -1 ||
+      x.content?.category.indexOf(state.documentSearch.searchWord) !== -1 ||
+      x.content?.body.indexOf(state.documentSearch.searchWord) !== -1
+  );
 
   // filter by category
   if (state.documentSearch.category) {
@@ -99,7 +97,7 @@ export const selectFilteredDocuments = createSelector(selectMarkdownDocumentStat
       if (!x.content.tag || x.content.tag?.length === 0) {
         return false;
       } else {
-        return state.documentSearch.tags.every((t) => x.content.tag.includes(t));
+        return state.documentSearch.tags.every((t) => x.content.tag.indexOf(t) !== -1);
       }
     });
   }

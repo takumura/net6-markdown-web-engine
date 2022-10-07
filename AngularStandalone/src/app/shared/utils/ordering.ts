@@ -2,13 +2,13 @@ import { DocumentRef } from 'src/app/store/models/document-ref.model';
 
 export function sortByTitle(desc: boolean) {
   return (a: DocumentRef, b: DocumentRef) => {
-    const aTitle = a.content.title;
-    const bTitle = b.content.title;
+    const aTitle = a.content.title.toLowerCase();
+    const bTitle = b.content.title.toLowerCase();
     let result = 0;
 
-    if (aTitle < bTitle) {
+    if (aTitle > bTitle) {
       result = 1;
-    } else if (aTitle > bTitle) {
+    } else if (aTitle < bTitle) {
       result = -1;
     }
 

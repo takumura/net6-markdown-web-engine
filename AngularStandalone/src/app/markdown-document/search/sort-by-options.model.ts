@@ -1,9 +1,8 @@
 export const searchResultSortBy = {
   dateLatest: 0,
   dateOldest: 1,
-  hitIndex: 2,
-  aToZ: 3,
-  zToA: 4,
+  aToZ: 2,
+  zToA: 3,
 } as const;
 
 export interface sortByOption {

@@ -49,7 +49,7 @@
     >
       <mat-label>Sort</mat-label>
       <mat-select formControlName="searchOptionForm">
-        <mat-option *ngFor="let option of sortByOptions$ | async" [value]="option.key">
+        <mat-option *ngFor="let option of sortByOptions" [value]="option.key">
           {{ option.value }}
         </mat-option>
       </mat-select>
