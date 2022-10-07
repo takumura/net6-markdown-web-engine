@@ -1,8 +1,6 @@
 import { Action, createReducer, on } from '@ngrx/store';
 
-import lunr from 'lunr';
 import documentJson from 'src/assets/index.json';
-import ja from 'src/app/markdown-document/lunr.ja.js';
 import { searchResultSortBy } from 'src/app/markdown-document/search/sort-by-options.model';
 import { searchResultViewType } from 'src/app/markdown-document/search/view-type-options.model';
 import { DocumentRef } from 'src/app/store/models/document-ref.model';
@@ -14,14 +12,6 @@ import {
   searchDocumentsByAdvancedOptions,
   updateViewType,
 } from './markdown-document.action';
-
-type Ilunr = (config: lunr.ConfigFunction) => lunr.Index;
-type JPlunr = Ilunr & {
-  ja: any;
-};
-
-// Setup Japanese support for lunr
-ja(lunr);
 
 let documents = documentJson.map((x) => {
   const jsonObj = JSON.parse(x) as DocumentRef;
@@ -41,18 +31,6 @@ let documents = documentJson.map((x) => {
   }
 
   return result;
-});
-
-export const lunrIndex = lunr((builder) => {
-  builder.use((lunr as unknown as JPlunr).ja);
-  builder.field('title', { extractor: (doc: {}) => (doc as DocumentRef).content.title });
-  builder.field('category', { extractor: (doc: {}) => (doc as DocumentRef).content.category });
-  builder.field('body', { extractor: (doc: {}) => (doc as DocumentRef).content.body });
-  builder.ref('docRef');
-
-  documents.forEach((doc) => {
-    builder.add(doc);
-  });
 });
 
 const initialState: State = {

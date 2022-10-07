@@ -9,7 +9,8 @@
     "test": "ng test",
     "prestart": "node aspnetcore-https",
     "lint": "ng lint",
-    "deploy": "ng deploy"
+    "deploy": "ng deploy",
+    "source-map-explorer": "source-map-explorer ./dist/net6-markdown-web-engine/main.7fafc7910ddfc87b.js"
   },
   "private": true,
   "dependencies": {
@@ -30,7 +31,6 @@
     "@ngrx/store-devtools": "^14.1.0",
     "angular-cli-ghpages": "^1.0.3",
     "jest-editor-support": "*",
-    "lunr": "^2.3.9",
     "postscribe": "^2.0.8",
     "rehype-attr": "^2.0.8",
     "rehype-autolink-headings": "^6.1.1",
@@ -57,7 +57,6 @@
     "@angular/compiler-cli": "^14.1.2",
     "@ngrx/schematics": "^14.1.0",
     "@types/jasmine": "~3.10.0",
-    "@types/lunr": "^2.3.4",
     "@types/node": "^12.11.1",
     "@typescript-eslint/eslint-plugin": "^5.29.0",
     "@typescript-eslint/parser": "^5.29.0",
@@ -69,6 +68,7 @@
     "karma-coverage": "~2.1.0",
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "~1.7.0",
+    "source-map-explorer": "^2.5.3",
     "typescript": "~4.7.4"
   }
 }

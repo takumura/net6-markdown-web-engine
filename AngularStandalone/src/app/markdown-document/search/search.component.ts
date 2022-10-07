@@ -7,7 +7,6 @@ import {
   debounceTime,
   distinctUntilChanged,
   Subject,
-  BehaviorSubject,
   takeUntil,
   startWith,
   map,
@@ -57,6 +56,12 @@ export class SearchComponent implements OnInit, OnDestroy {
   isAdvancedSearchOpen: boolean = false;
   // used for tag autocomplete separator key
   separatorKeysCodes: number[] = [ENTER, COMMA];
+  sortByOptions: sortByOption[] = [
+    { key: searchResultSortBy.dateLatest, value: 'by date (latest)' },
+    { key: searchResultSortBy.dateOldest, value: 'by date (oldest)' },
+    { key: searchResultSortBy.aToZ, value: 'by A to Z' },
+    { key: searchResultSortBy.zToA, value: 'by Z to A' },
+  ];
   tags: string[] = [];
   viewTypeModel = searchResultViewType;
 
@@ -65,22 +70,10 @@ export class SearchComponent implements OnInit, OnDestroy {
   allTags$!: Observable<string[]>;
   filteredTags$!: Observable<string[]>;
   hasAdvancedOptions$!: Observable<boolean>;
-  sortByOptionsSub!: BehaviorSubject<sortByOption[]>;
-  sortByOptions$!: Observable<sortByOption[]>;
   viewType$!: Observable<number>;
 
   private currentViewType: number = 0;
   private onDestroy = new Subject<void>();
-  private sortByOptions: sortByOption[] = [
-    { key: searchResultSortBy.dateLatest, value: 'by date (latest)' },
-    { key: searchResultSortBy.dateOldest, value: 'by date (oldest)' },
-  ];
-  //TODO reuser array to DRY
-  private sortByAfterSearchOptions: sortByOption[] = [
-    { key: searchResultSortBy.dateLatest, value: 'by date (latest)' },
-    { key: searchResultSortBy.dateOldest, value: 'by date (oldest)' },
-    { key: searchResultSortBy.hitIndex, value: 'by hit index' },
-  ];
 
   constructor(private store: Store) {}
 
@@ -90,8 +83,6 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.allCategories$ = this.store.select(selectCategories);
     this.allTags$ = this.store.select(selectTags);
     this.hasAdvancedOptions$ = this.store.select(selectHasAdvancedOptions);
-    this.sortByOptionsSub = new BehaviorSubject<sortByOption[]>(this.sortByOptions);
-    this.sortByOptions$ = this.sortByOptionsSub.asObservable();
     this.viewType$ = this.store.select(selectViewType);
 
     this.filteredTags$ = this.searchForm.controls.searchTagForm.valueChanges.pipe(
@@ -205,13 +196,13 @@ export class SearchComponent implements OnInit, OnDestroy {
   private getAutocompleteTags(value: string): Observable<string[]> {
     const filterValue = value.toLowerCase();
 
-    return this.allTags$.pipe(map((tags) => tags.filter((x) => x.toLowerCase().includes(filterValue))));
+    return this.allTags$.pipe(map((tags) => tags.filter((x) => x.toLowerCase().indexOf(filterValue) !== -1)));
   }
 
   private getAvailableTags(): Observable<string[]> {
     return this.allTags$.pipe(
       map((tags) => {
-        return tags.filter((x) => !this.tags.includes(x.toLowerCase()));
+        return tags.filter((x) => this.tags.indexOf(x.toLowerCase()) === -1);
       })
     );
   }
@@ -222,10 +213,5 @@ export class SearchComponent implements OnInit, OnDestroy {
 
     this.store.dispatch(searchDocuments({ search: searchWord, sortBy: sortByValue }));
     this.documents$ = this.store.select(selectFilteredDocuments);
-    if (searchWord) {
-      this.sortByOptionsSub.next(this.sortByAfterSearchOptions);
-    } else {
-      this.sortByOptionsSub.next(this.sortByOptions);
-    }
   }
 }
