@@ -1,6 +1,6 @@
 ---
 title: "Todo リスト"
-date: "2023-09-23"
+date: "2023-10-08"
 category: "todo"
 toc: "none"
 ---
@@ -14,10 +14,11 @@ toc: "none"
   - [x] CategoryとTagのautocompleteをcase insensitiveにソートする
   - [x] 全文検索(lunr)がうまく動いていない問題の解消
 - [x] バンドルサイズの縮小
-- [ ] Tagボタンのリンク化
+- [x] Tagボタンのリンク化
 - [ ] Refactoring
   - [ ] TODO指定しているコード（対応しながらリストアップ）
   - [ ] 大きすぎるファイルをutilやserviceに分割する
+  - [ ] mobileの見た目を調整
 - [ ] markdown-document displayコンポーネントのレイアウトをcss gridからflexに変更
 
 ## サイトの更新
