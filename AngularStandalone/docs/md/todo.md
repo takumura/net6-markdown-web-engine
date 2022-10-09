@@ -15,7 +15,10 @@ toc: "none"
   - [x] 全文検索(lunr)がうまく動いていない問題の解消
 - [x] バンドルサイズの縮小
 - [x] Tagボタンのリンク化
-- [ ] Refactoring
+- [-] Refactoring
+  - [x] style.scssで`@include mat.all-component-themes`を使用して不必要なスタイルもすべてincludeしていたのを、必要な分だけincludeするように変更
+  - [x] loading componentのNGRX対応
+  - [x] Lazy loading対応
   - [ ] TODO指定しているコード（対応しながらリストアップ）
   - [ ] 大きすぎるファイルをutilやserviceに分割する
   - [ ] mobileの見た目を調整
