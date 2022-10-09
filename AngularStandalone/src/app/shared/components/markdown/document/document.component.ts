@@ -14,7 +14,7 @@ import { Observable, of, Subject, takeUntil } from 'rxjs';
 import postscribe from 'postscribe';
 
 import { DocumentRef } from 'src/app/store/models/document-ref.model';
-import { TocService } from '../../services/toc.service';
+import { TocService } from '../../../services/toc.service';
 
 @Component({
   selector: 'app-document',

@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@a
 import { initialMarkdownDocumentModel, MarkdownDocument } from 'src/app/store/models/markdown-document.model';
 import { ReplaySubject, Subject, takeUntil } from 'rxjs';
 
-import { TocService, TocItem } from '../../services/toc.service';
+import { TocService, TocItem } from '../../../services/toc.service';
 
 @Component({
   selector: 'app-document-toc',
