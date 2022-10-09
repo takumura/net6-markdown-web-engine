@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-
-import { LoadingBarService } from './loading-bar.service';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { selectShowLoading } from 'src/app/store/loading/loading.selector';
 
 @Component({
   selector: 'app-loading-bar',
@@ -9,5 +10,9 @@ import { LoadingBarService } from './loading-bar.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoadingBarComponent {
-  constructor(public loadingBarService: LoadingBarService) {}
+  loading$: Observable<boolean>;
+
+  constructor(public store: Store) {
+    this.loading$ = this.store.select(selectShowLoading);
+  }
 }

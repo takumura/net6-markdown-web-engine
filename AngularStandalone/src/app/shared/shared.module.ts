@@ -8,8 +8,7 @@ import { DocumentHeaderComponent } from './markdown/document-header/document-hea
 import { DocumentListComponent } from './lists/document-list/document-list.component';
 import { DocumentListItemComponent } from './lists/document-list-item/document-list-item.component';
 import { ExpansionDocumentListComponent } from './lists/expansion-document-list/expansion-document-list.component';
-import { LoadingBarComponent } from './loading-bar/loading-bar.component';
-import { LoadingBarService } from './loading-bar/loading-bar.service';
+import { LoadingBarComponent } from './components/loading-bar/loading-bar.component';
 import { BreakpointObserverService } from './services/breakpoint-observer.service';
 import { MyTitleStrategyService } from './services/markdown-document-title-strategy.service';
 import { TagComponent } from './tags/tag/tag.component';
@@ -36,7 +35,6 @@ const components = [
   exports: [components],
   providers: [
     BreakpointObserverService,
-    LoadingBarService,
     { provide: TitleStrategy, useClass: MyTitleStrategyService },
     ScrollSpyService,
     TocService,
