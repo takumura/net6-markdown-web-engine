@@ -33,6 +33,7 @@ import {
   selectViewType,
 } from 'src/app/store/document-search/document-search.selectors';
 import { selectCategories, selectTags } from 'src/app/store/document-index/document-index.selectors';
+import { showLoading } from 'src/app/store/loading/loading.actions';
 
 @Component({
   selector: 'app-search',
@@ -207,7 +208,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     const searchWord = this.searchForm.controls.searchInputForm.value ?? '';
     const sortByValue = this.searchForm.controls.searchOptionForm.value ?? 0;
 
+    this.store.dispatch(showLoading());
     this.store.dispatch(searchDocuments({ search: searchWord, sortBy: sortByValue }));
-    this.documents$ = this.store.select(selectFilteredDocuments);
   }
 }
