@@ -7,7 +7,7 @@ import { SearchComponent } from './markdown-document/search/search.component';
 import { DisplayComponent } from './markdown-document/display/display.component';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent, title: 'Home' },
+  { path: 'home', component: HomeComponent, title: 'Home' },
   { path: 'search', component: SearchComponent, title: 'Search' },
   {
     path: 'doc/:ref',
@@ -19,6 +19,7 @@ const routes: Routes = [
     ],
   },
   { path: 'test-api', component: NetCoreApiComponent },
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
 ];
 
 @NgModule({
