@@ -1,5 +1,5 @@
 import { Action, createReducer, on } from '@ngrx/store';
-import { hideLoading, showLoading } from './loading.action';
+import { hideLoading, showLoading } from './loading.actions';
 
 export const featureKey = 'loading';
 

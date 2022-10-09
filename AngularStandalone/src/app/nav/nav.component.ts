@@ -5,7 +5,7 @@ import { delay, filter, Observable, Subject, takeUntil } from 'rxjs';
 
 import { environment } from 'src/environments/environment';
 import { BreakpointObserverService } from 'src/app/shared/services/breakpoint-observer.service';
-import { hideLoading, showLoading } from 'src/app/store/loading/loading.action';
+import { hideLoading, showLoading } from 'src/app/store/loading/loading.actions';
 
 @Component({
   selector: 'app-nav',

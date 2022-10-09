@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 
-import { searchDocumentsByAdvancedOptions } from 'src/app/markdown-document/store/markdown-document.action';
+import { searchDocumentsByAdvancedOptions } from 'src/app/store/document-search/document-search.actions';
 
 @Component({
   selector: 'app-tag',

@@ -3,7 +3,7 @@ import { RouterStateSnapshot, TitleStrategy } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Subject, takeUntil } from 'rxjs';
 
-import { selectDocumentTitle } from 'src/app/markdown-document/store/markdown-document.selectors';
+import { selectDocumentTitle } from 'src/app/store/document-index/document-index.selectors';
 import { environment } from 'src/environments/environment';
 
 @Injectable({

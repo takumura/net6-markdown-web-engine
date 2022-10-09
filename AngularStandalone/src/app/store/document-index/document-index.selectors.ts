@@ -20,21 +20,21 @@ import rehypeStringify from 'rehype-stringify';
 import rehypeExternalLinks from 'rehype-external-links';
 import rehypeAttrs from 'rehype-attr';
 import rehypePrismGenerator from 'rehype-prism-plus/generator';
-import { searchResultSortBy } from 'src/app/markdown-document/search/sort-by-options.model';
-import { sortByDate, sortByTitle } from 'src/app/shared/utils/ordering';
-import { DocumentRef } from 'src/app/store/models/document-ref.model';
-import { initialMarkdownDocumentModel } from 'src/app/store/models/markdown-document.model';
-import { selectUrl } from 'src/app/store/router/router.selector';
-import * as fromMarkdownDocument from './markdown-document.reducer';
+import * as fromDocumentIndex from './document-index.reducer';
 import { environment } from 'src/environments/environment';
+import { selectUrl } from '../router/router.selectors';
+import { DocumentRef } from '../models/document-ref.model';
+import { initialMarkdownDocumentModel } from '../models/markdown-document.model';
+import { lowerCaseComparer } from 'src/app/shared/utils/lowerCaseComparer';
 
-const selectMarkdownDocumentState = createFeatureSelector<fromMarkdownDocument.State>(fromMarkdownDocument.featureKey);
+const selectDocumentIndexState = createFeatureSelector<fromDocumentIndex.State>(fromDocumentIndex.featureKey);
+
 const defaultDocRefModel: DocumentRef = {
   docRef: '',
   content: initialMarkdownDocumentModel,
 };
 
-export const selectCategories = createSelector(selectMarkdownDocumentState, (state) => {
+export const selectCategories = createSelector(selectDocumentIndexState, (state) => {
   const docCategoires = state?.documentIndex.map((x) => x.content.category);
   const result = new Set<string>(docCategoires);
   return Array.from(result)
@@ -43,7 +43,7 @@ export const selectCategories = createSelector(selectMarkdownDocumentState, (sta
     .sort(lowerCaseComparer);
 });
 
-export const selectDocuments = createSelector(selectMarkdownDocumentState, (state) => state?.documentIndex);
+export const selectDocuments = createSelector(selectDocumentIndexState, (state) => state?.documentIndex);
 
 export const selectDocument = createSelector(selectDocuments, selectUrl, (documents, url) => {
   // The fragment will be included on url e.g. click ToC link
@@ -69,59 +69,7 @@ export const selectDocumentTitle = createSelector(selectDocument, (document) => 
   return document?.content?.title;
 });
 
-export const selectFilteredDocuments = createSelector(selectMarkdownDocumentState, (state) => {
-  let filteredDocuments: DocumentRef[] = state?.documentIndex.filter(
-    (x) => !environment.ignoreListForCategory.some((c) => c === x?.content?.category.toLowerCase())
-  );
-
-  if (!state.documentSearch.searchWord && !state.documentSearch.tags) {
-    return getOrderedDocumentIndex(state, filteredDocuments);
-  }
-
-  // filter by search keywork
-  filteredDocuments = filteredDocuments.filter(
-    (x) =>
-      x.content?.title.indexOf(state.documentSearch.searchWord) !== -1 ||
-      x.content?.category.indexOf(state.documentSearch.searchWord) !== -1 ||
-      x.content?.body.indexOf(state.documentSearch.searchWord) !== -1
-  );
-
-  // filter by category
-  if (state.documentSearch.category) {
-    filteredDocuments = filteredDocuments.filter((x) => x.content?.category === state.documentSearch.category);
-  }
-
-  //filter by tags
-  if (state.documentSearch.tags && state.documentSearch.tags.length > 0) {
-    filteredDocuments = filteredDocuments.filter((x) => {
-      if (!x.content.tag || x.content.tag?.length === 0) {
-        return false;
-      } else {
-        return state.documentSearch.tags.every((t) => x.content.tag.indexOf(t) !== -1);
-      }
-    });
-  }
-
-  return getOrderedDocumentIndex(state, filteredDocuments);
-});
-
-export const selectHasAdvancedOptions = createSelector(selectMarkdownDocumentState, (document) => {
-  return !!document?.documentSearch?.category || document?.documentSearch?.tags?.length > 0;
-});
-
-export const selectSearchCategory = createSelector(
-  selectMarkdownDocumentState,
-  (state) => state?.documentSearch?.category
-);
-
-export const selectSearchTags = createSelector(selectMarkdownDocumentState, (state) => state?.documentSearch?.tags);
-
-export const selectSearchWord = createSelector(
-  selectMarkdownDocumentState,
-  (state) => state?.documentSearch?.searchWord
-);
-
-export const selectTags = createSelector(selectMarkdownDocumentState, (state) => {
+export const selectTags = createSelector(selectDocumentIndexState, (state) => {
   const docTags = state?.documentIndex.map((x) => {
     const content = x.content;
     return content.tag;
@@ -133,8 +81,6 @@ export const selectTags = createSelector(selectMarkdownDocumentState, (state) =>
     .filter((x) => x !== undefined && x !== null)
     .sort(lowerCaseComparer);
 });
-
-export const selectViewType = createSelector(selectMarkdownDocumentState, (state) => state?.documentSearch.viewType);
 
 function convertJsonToHtml(document: DocumentRef) {
   refractor.register(csharp);
@@ -166,30 +112,4 @@ function convertJsonToHtml(document: DocumentRef) {
   };
 
   return result;
-}
-
-function getOrderedDocumentIndex(state: fromMarkdownDocument.State, documentIndex: DocumentRef[]) {
-  let index = [...documentIndex];
-
-  switch (state.documentSearch.sortBy) {
-    case searchResultSortBy.dateLatest:
-      return index.sort(sortByDate(true));
-      break;
-    case searchResultSortBy.dateOldest:
-      return index.sort(sortByDate(false));
-      break;
-    case searchResultSortBy.aToZ:
-      return index.sort(sortByTitle(false));
-      break;
-    case searchResultSortBy.zToA:
-      return index.sort(sortByTitle(true));
-      break;
-    default:
-      return documentIndex;
-      break;
-  }
-}
-
-function lowerCaseComparer(a: string, b: string) {
-  return a.toLowerCase().localeCompare(b.toLowerCase());
 }

@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { selectShowLoading } from 'src/app/store/loading/loading.selector';
+
+import { selectShowLoading } from 'src/app/store/loading/loading.selectors';
 
 @Component({
   selector: 'app-loading-bar',

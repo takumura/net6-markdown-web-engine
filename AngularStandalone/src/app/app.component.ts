@@ -1,4 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Store } from '@ngrx/store';
+
+import { loadDocuments } from './store/document-index/document-index.actions';
 
 @Component({
   selector: 'app-root',
@@ -6,4 +9,8 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   styleUrls: ['./app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent {}
+export class AppComponent {
+  constructor(private store: Store) {
+    this.store.dispatch(loadDocuments());
+  }
+}
