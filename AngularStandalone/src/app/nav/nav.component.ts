@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { delay, filter, Observable, Subject, takeUntil } from 'rxjs';
 
 import { environment } from 'src/environments/environment';
-import { LoadingBarService } from '../shared/loading-bar/loading-bar.service';
-import { BreakpointObserverService } from '../shared/services/breakpoint-observer.service';
+import { BreakpointObserverService } from 'src/app/shared/services/breakpoint-observer.service';
+import { hideLoading, showLoading } from 'src/app/store/loading/loading.actions';
 
 @Component({
   selector: 'app-nav',
@@ -20,7 +21,7 @@ export class NavComponent implements OnInit, OnDestroy {
   constructor(
     private breakpointObserverService: BreakpointObserverService,
     private router: Router,
-    private loadingBarService: LoadingBarService
+    private store: Store
   ) {}
 
   ngOnInit() {
@@ -30,7 +31,7 @@ export class NavComponent implements OnInit, OnDestroy {
         takeUntil(this.onDestroy)
       )
       .subscribe(() => {
-        this.loadingBarService.show();
+        this.store.dispatch(showLoading());
       });
 
     this.router.events
@@ -43,7 +44,7 @@ export class NavComponent implements OnInit, OnDestroy {
         takeUntil(this.onDestroy)
       )
       .subscribe(() => {
-        this.loadingBarService.hide();
+        this.store.dispatch(hideLoading());
       });
   }
 

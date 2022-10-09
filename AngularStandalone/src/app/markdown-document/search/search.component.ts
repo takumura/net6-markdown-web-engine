@@ -2,6 +2,8 @@ import { ChangeDetectionStrategy, Component, ElementRef, OnDestroy, OnInit, View
 import { FormControl, FormGroup } from '@angular/forms';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Store } from '@ngrx/store';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import {
   Observable,
   debounceTime,
@@ -14,27 +16,24 @@ import {
   combineLatestWith,
 } from 'rxjs';
 
-import { searchResultSortBy, sortByOption } from './sort-by-options.model';
-import { searchResultViewType } from './view-type-options.model';
+import { DocumentRef } from 'src/app/store/models/document-ref.model';
+import { searchResultSortBy, sortByOption } from 'src/app/store/models/sort-by-options.model';
+import { searchResultViewType } from 'src/app/store/models/view-type-options.model';
 import {
-  loadDocuments,
   searchDocuments,
   searchDocumentsByAdvancedOptions,
   updateViewType,
-} from '../store/markdown-document.action';
+} from 'src/app/store/document-search/document-search.actions';
 import {
-  selectCategories,
   selectFilteredDocuments,
   selectHasAdvancedOptions,
   selectSearchCategory,
   selectSearchTags,
   selectSearchWord,
-  selectTags,
   selectViewType,
-} from '../store/markdown-document.selectors';
-import { DocumentRef } from '../../store/models/document-ref.model';
-import { MatChipInputEvent } from '@angular/material/chips';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+} from 'src/app/store/document-search/document-search.selectors';
+import { selectCategories, selectTags } from 'src/app/store/document-index/document-index.selectors';
+import { showLoading } from 'src/app/store/loading/loading.actions';
 
 @Component({
   selector: 'app-search',
@@ -120,8 +119,6 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.viewType$.pipe(takeUntil(this.onDestroy)).subscribe((x) => {
       this.currentViewType = x;
     });
-
-    this.store.dispatch(loadDocuments());
   }
 
   ngOnDestroy(): void {
@@ -211,7 +208,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     const searchWord = this.searchForm.controls.searchInputForm.value ?? '';
     const sortByValue = this.searchForm.controls.searchOptionForm.value ?? 0;
 
+    this.store.dispatch(showLoading());
     this.store.dispatch(searchDocuments({ search: searchWord, sortBy: sortByValue }));
-    this.documents$ = this.store.select(selectFilteredDocuments);
   }
 }
