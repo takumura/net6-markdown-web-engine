@@ -17,6 +17,10 @@ const routes: Routes = [
         (m) => m.MarkdownDocumentDisplayModule
       ),
   },
+  {
+    path: 'color-check',
+    loadChildren: () => import('./color-check/color-check.module').then((m) => m.ColorCheckModule),
+  },
   { path: 'test-api', component: NetCoreApiComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
 ];
