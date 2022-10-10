@@ -10,7 +10,7 @@
   }
 
   .list-item-category {
-    color: mat.get-color-from-palette($light-accent, "darker");
+    color: $accent-darker;
   }
 
   .list-item-title {
@@ -24,4 +24,8 @@
     text-overflow: ellipsis;
     margin-top: 4px;
   }
+}
+
+.mat-divider {
+  color: $gray-300;
 }

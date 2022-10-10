@@ -12,6 +12,7 @@ import powershell from 'refractor/lang/powershell.js';
 import typescript from 'refractor/lang/typescript.js';
 import yaml from 'refractor/lang/yaml.js';
 import remarkParse from 'remark-parse';
+import remarkGfm from 'remark-gfm';
 import remarkRehype from 'remark-rehype';
 import rehypeRaw from 'rehype-raw';
 import rehypeSlug from 'rehype-slug';
@@ -96,6 +97,7 @@ function convertJsonToHtml(document: DocumentRef) {
 
   const processor = unified()
     .use(remarkParse)
+    .use(remarkGfm)
     .use(remarkRehype, { allowDangerousHtml: true })
     .use(rehypeRaw)
     .use(rehypeSlug)

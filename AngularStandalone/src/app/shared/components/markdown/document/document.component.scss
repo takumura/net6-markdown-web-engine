@@ -3,18 +3,18 @@
 
 ::ng-deep .internal-link {
   cursor: pointer;
-  color: mat.get-color-from-palette($light-accent, "darker");
+  color: $accent-darker;
   text-decoration: underline;
 }
 
 ::ng-deep a {
-  color: mat.get-color-from-palette($light-primary);
+  color: $primary;
 }
 
 ::ng-deep details {
   margin-top: 32px;
   padding: 4px;
-  border: solid 1px mat.get-color-from-palette($light-primary, 500);
+  border: solid 1px $primary;
 }
 
 ::ng-deep table {
@@ -25,7 +25,7 @@
 
 ::ng-deep table td,
 ::ng-deep table th {
-  border: 1px solid mat.get-color-from-palette($gray, 300);
+  border: 1px solid $gray-300;
   padding: 6px 13px;
 }
 
@@ -53,7 +53,7 @@
 }
 
 ::ng-deep code:not(.code-highlight) {
-  background: mat.get-color-from-palette($gray, 300);
+  background: $gray-300;
   font-family: Consolas, "Noto Sans JP", "Courier New", Courier, Monaco, monospace;
   padding: 2px;
   margin: 2px;
@@ -108,9 +108,9 @@
   padding: 10px 15px 10px 60px;
   box-sizing: border-box;
   font-style: italic;
-  background: mat.get-color-from-palette($gray, 100);
-  color: mat.get-color-from-palette($gray, 600);
-  border-left: 4px solid mat.get-color-from-palette($light-primary);
+  background: $gray-lighter;
+  color: $gray-600;
+  border-left: 4px solid $primary;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.14);
 }
 
@@ -121,7 +121,7 @@
   left: 5px;
   vertical-align: middle;
   content: '"';
-  color: mat.get-color-from-palette($light-primary);
+  color: $primary;
   font-size: 4em;
   line-height: 1;
 }
