@@ -8,9 +8,9 @@
 .search-advanced-overlay {
   width: 80vw;
   height: 30vh;
-  border: solid 1px #ccc;
+  border: solid 1px $gray;
   border-radius: 5px;
-  background: #fff;
+  background: $color-background;
   text-align: center;
   padding: 10px;
   margin: 0;
@@ -56,14 +56,14 @@
       line-height: 1em;
 
       .has-advanced-options {
-        color: mat.get-color-from-palette($light-accent, "darker");
+        color: $accent-darker;
       }
     }
   }
 
   .search-options-container {
     display: grid;
-    border-top: 2px ridge mat.get-color-from-palette($gray, lighter);
+    border-top: 2px ridge $gray-lighter;
     padding: 8px 2px 0 2px;
     grid-template-columns: 1fr 1fr 1fr;
     align-items: baseline;
@@ -74,7 +74,7 @@
       grid-template-columns: 30px 30px;
       column-gap: 10px;
       justify-content: start;
-      color: mat.get-color-from-palette($gray, darker);
+      color: $gray-darker;
 
       .mat-icon {
         padding: 4px;
@@ -86,7 +86,7 @@
       }
 
       .active-view-type {
-        border: 1px solid mat.get-color-from-palette($gray);
+        border: 1px solid $gray;
       }
     }
 

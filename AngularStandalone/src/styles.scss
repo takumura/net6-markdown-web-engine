@@ -41,13 +41,13 @@ img {
 }
 
 .secondary-text {
-  color: mat.get-color-from-palette($foreground, secondary-text);
+  color: $color-foreground-secondary-text;
 }
 
 .hint-text {
-  color: mat.get-color-from-palette($foreground, hint-text);
+  color: $color-foreground-hint-text;
 }
 
 .disabled-text {
-  color: mat.get-color-from-palette($foreground, disabled-text);
+  color: $color-foreground-disabled-text;
 }
